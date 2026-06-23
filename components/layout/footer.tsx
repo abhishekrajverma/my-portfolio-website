@@ -11,8 +11,7 @@ import { LinkedInIcon } from "@/components/icons/social-icons";
 import { siteConfig, socialLinks } from "@/constants/site";
 import { navLinks } from "@/constants/navigation";
 import { Separator } from "@/components/ui/separator";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { NewsletterForm } from "@/components/layout/newsletter-form";
 
 const iconMap: Record<string, React.ReactNode> = {
   linkedin: <LinkedInIcon />,
@@ -81,18 +80,9 @@ export function Footer() {
           <div>
             <h3 className="mb-4 font-semibold">Newsletter</h3>
             <p className="mb-4 text-sm text-muted-foreground">
-              Get data analytics tips and tutorials delivered to your inbox.
+              Get an email when a new data analytics article is published.
             </p>
-            <form className="flex gap-2" onSubmit={(e) => e.preventDefault()}>
-              <Input
-                type="email"
-                placeholder="your@email.com"
-                aria-label="Email for newsletter"
-              />
-              <Button type="submit" variant="default">
-                Subscribe
-              </Button>
-            </form>
+            <NewsletterForm />
           </div>
         </div>
 

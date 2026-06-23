@@ -2,6 +2,35 @@ import type { BlogPost } from "@/types";
 
 export const blogPosts: BlogPost[] = [
   {
+    slug: "mis-kpi-dashboard-best-practices",
+    title: "5 MIS KPI Dashboard Best Practices for Business Teams",
+    excerpt:
+      "Learn how to design MIS dashboards that executives actually use — from KPI selection to refresh automation in Power BI and Excel.",
+    category: "Power BI",
+    date: "2026-06-23",
+    readTime: "6 min read",
+    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=500&fit=crop",
+    content: `## Why MIS Dashboards Fail
+
+Most dashboards are built with too many metrics and no clear action path. The best MIS dashboards answer one business question per view.
+
+## 5 Best Practices
+
+1. **Start with the decision** — Build around what managers need to act on daily.
+2. **Limit KPIs per page** — Keep 5–7 metrics visible at once.
+3. **Automate refresh** — Use SQL Server + Power BI scheduled refresh instead of manual Excel exports.
+4. **Show trends, not just totals** — Add week-over-week and month-over-month comparisons.
+5. **Document definitions** — Every KPI should have a clear formula and owner.
+
+## Quick Win for MIS Teams
+
+Replace manual weekly reports with one Power BI dashboard connected to your SQL Server MIS tables. Most teams save 4–6 hours per week.
+
+## Conclusion
+
+A focused MIS dashboard turns raw operational data into faster decisions. Start small, validate with stakeholders, then expand.`,
+  },
+  {
     slug: "sql-window-functions-guide",
     title: "Mastering SQL Window Functions: A Complete Guide",
     excerpt:
@@ -175,6 +204,12 @@ Use the STAR method: Situation, Task, Action, Result.`,
 
 export function getBlogPostBySlug(slug: string): BlogPost | undefined {
   return blogPosts.find((p) => p.slug === slug);
+}
+
+export function getLatestBlogPost(): BlogPost | undefined {
+  return [...blogPosts].sort(
+    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+  )[0];
 }
 
 export function getBlogPostsByCategory(
