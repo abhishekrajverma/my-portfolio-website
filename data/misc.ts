@@ -47,7 +47,7 @@ export const faqs: FAQ[] = [
     id: "3",
     question: "Are you open to Data Analyst or MIS roles?",
     answer:
-      "Yes. I am actively exploring Data Analyst and MIS Analyst opportunities in Haryana and remote-friendly organizations across India.",
+      "Yes. I am actively exploring Data Analyst and MIS Analyst opportunities in Gurgaon, Noida, and remote-friendly organizations across India.",
   },
   {
     id: "4",

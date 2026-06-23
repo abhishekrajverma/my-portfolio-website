@@ -3,7 +3,7 @@ const defaults = {
   NEXT_PUBLIC_SITE_NAME: "Abhishek Raj",
   NEXT_PUBLIC_CONTACT_EMAIL: "abhishekr359@gmail.com",
   NEXT_PUBLIC_CONTACT_PHONE: "+91-9262648753",
-  NEXT_PUBLIC_CONTACT_LOCATION: "Haryana, India",
+  NEXT_PUBLIC_CONTACT_LOCATION: "Gurgaon & Noida, India",
   NEXT_PUBLIC_LINKEDIN_URL: "https://linkedin.com/in/abhishekrajverma",
 } as const;
 

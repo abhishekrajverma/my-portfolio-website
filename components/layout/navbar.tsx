@@ -30,6 +30,17 @@ export function Navbar() {
   useEffect(() => setMounted(true), []);
 
   useEffect(() => {
+    if (mobileOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [mobileOpen]);
+
+  useEffect(() => {
     const down = (e: KeyboardEvent) => {
       if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
@@ -48,7 +59,9 @@ export function Navbar() {
         transition={{ duration: 0.6, ease: "easeOut" }}
         className={cn(
           "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-          scrolled ? "glass shadow-lg" : "bg-transparent"
+          scrolled || mobileOpen
+            ? "border-b border-border bg-background/95 shadow-lg backdrop-blur-xl"
+            : "bg-transparent"
         )}
       >
         <div
@@ -124,22 +137,25 @@ export function Navbar() {
             </Button>
           </div>
         </nav>
+      </motion.header>
 
-        <AnimatePresence>
-          {mobileOpen && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              className="glass border-t border-border md:hidden"
-            >
-              <div className="container-custom flex flex-col gap-1 px-6 py-4">
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.div
+            key="mobile-menu"
+            initial={{ y: -12, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: -12, opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-x-0 top-16 bottom-0 z-[60] overflow-y-auto border-t border-border bg-background shadow-2xl md:hidden"
+          >
+            <div className="container-custom flex flex-col gap-1 px-6 py-4">
                 {navLinks.map((link) => (
                   <Link
                     key={link.href}
                     href={link.href}
                     onClick={() => setMobileOpen(false)}
-                    className="rounded-lg px-3 py-2.5 text-sm text-muted-foreground transition-colors hover:text-foreground hover:bg-muted/50"
+                    className="rounded-lg px-3 py-2.5 text-sm text-foreground transition-colors hover:bg-muted/50"
                   >
                     {link.label}
                   </Link>
@@ -153,11 +169,10 @@ export function Navbar() {
                     Download Resume
                   </a>
                 </Button>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </motion.header>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <CommandMenu open={commandOpen} onOpenChange={setCommandOpen} />
     </>

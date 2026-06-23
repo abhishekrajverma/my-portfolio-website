@@ -5,7 +5,7 @@ export const resumeData = {
     phone: "+91-9262648753",
     email: "abhishekr359@gmail.com",
     linkedin: "linkedin.com/in/abhishekrajverma",
-    location: "Haryana, India",
+    location: "Gurgaon & Noida, India",
   },
   summary:
     "Data-focused MIS Executive and aspiring Data Analyst with 1+ years of hands-on experience in reporting automation, dashboard development, and business performance analysis. Strong working knowledge of SQL Server, Power BI, Excel, Power Query, and Excel VBA. Delivered measurable impact by reducing manual reporting effort by 60 percent and improving dashboard/report performance by up to 40 percent. Comfortable converting business requirements into clear KPI frameworks and decision-ready insights.",

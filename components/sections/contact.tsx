@@ -116,8 +116,8 @@ export function ContactSection() {
               <div className="mt-8 rounded-xl bg-gradient-to-br from-primary/10 via-secondary/10 to-accent/10 p-6">
                 <h4 className="font-semibold mb-2">Open to Opportunities</h4>
                 <p className="text-sm text-muted-foreground">
-                  Currently exploring Data Analyst and MIS Analyst roles across
-                  Haryana and remote-friendly teams. Response time: within 24 hours.
+                  Currently exploring Data Analyst and MIS Analyst roles in
+                  Gurgaon, Noida, and remote-friendly teams. Response time: within 24 hours.
                 </p>
               </div>
             </GlassCard>

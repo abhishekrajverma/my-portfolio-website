@@ -34,7 +34,7 @@ export function Footer() {
             </div>
             <p className="text-sm text-muted-foreground leading-relaxed">
               Data Analyst & MIS Executive specializing in SQL Server, Power BI,
-              and automated reporting for business teams across Haryana, India.
+              and automated reporting for business teams in Gurgaon, Noida, and across India.
             </p>
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <MapPin className="h-4 w-4" />
@@ -98,12 +98,9 @@ export function Footer() {
 
         <Separator className="my-8" />
 
-        <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
+        <div className="text-center sm:text-left">
           <p className="text-sm text-muted-foreground">
             © {new Date().getFullYear()} {siteConfig.name}. All rights reserved.
-          </p>
-          <p className="text-sm text-muted-foreground">
-            Built with Next.js, Tailwind CSS & Framer Motion
           </p>
         </div>
       </div>
