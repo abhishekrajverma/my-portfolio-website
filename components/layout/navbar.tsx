@@ -11,7 +11,7 @@ import {
   Command,
   Download,
 } from "lucide-react";
-import { useTheme } from "next-themes";
+import { useTheme } from "@wrksz/themes/client";
 import { useScroll, useScrollProgress } from "@/hooks/use-scroll";
 import { navLinks } from "@/constants/navigation";
 import { siteConfig } from "@/constants/site";
@@ -22,7 +22,7 @@ import { cn } from "@/lib/utils";
 export function Navbar() {
   const scrolled = useScroll(20);
   const progress = useScrollProgress();
-  const { theme, setTheme } = useTheme();
+  const { resolvedTheme, setTheme } = useTheme();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [commandOpen, setCommandOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -105,10 +105,12 @@ export function Navbar() {
               <Button
                 variant="ghost"
                 size="icon"
-                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                onClick={() =>
+                  setTheme(resolvedTheme === "dark" ? "light" : "dark")
+                }
                 aria-label="Toggle theme"
               >
-                {theme === "dark" ? (
+                {resolvedTheme === "dark" ? (
                   <Sun className="h-4 w-4" />
                 ) : (
                   <Moon className="h-4 w-4" />
