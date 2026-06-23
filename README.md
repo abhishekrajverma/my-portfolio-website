@@ -1,36 +1,81 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Data Analyst Portfolio
+
+A premium, production-ready Data Analyst portfolio built with Next.js, TypeScript, Tailwind CSS, Framer Motion, and shadcn/ui.
+
+## Tech Stack
+
+- **Next.js 16** (App Router)
+- **TypeScript**
+- **Tailwind CSS v4**
+- **shadcn/ui** components
+- **Framer Motion** animations
+- **Recharts** for interactive dashboards
+- **React Hook Form** for contact form
+- **next-themes** for dark/light mode
+- **Lucide Icons**
+
+## Features
+
+- Dark mode by default with light mode toggle
+- Glassmorphism UI with animated gradients
+- Fully responsive design
+- SEO optimized (metadata, Open Graph, sitemap, robots.txt)
+- Interactive Power BI-style dashboard showcase
+- Project detail pages with SQL queries, insights, and screenshots
+- Markdown-powered blog with category filtering
+- Command menu (Ctrl/Cmd + K)
+- Custom cursor, scroll progress, back-to-top
+- Framer Motion animations throughout
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Customization
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Replace placeholder data in the `/data` folder:
 
-## Learn More
+- `profile.ts` — Personal info, experience, education
+- `skills.ts` — Skills and proficiency levels
+- `projects.ts` — Portfolio projects
+- `certifications.ts` — Certifications
+- `blog.ts` — Blog articles
+- `dashboard.ts` — Dashboard chart data
 
-To learn more about Next.js, take a look at the following resources:
+Update site config in `/constants/site.ts`.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Add your resume PDF to `/public/resume.pdf`.
 
 ## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+npm run build
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Deploy to [Vercel](https://vercel.com) — zero configuration required.
+
+## Project Structure
+
+```
+/app              — Pages and routes
+/components       — UI and section components
+  /ui             — shadcn/ui primitives
+  /layout         — Navbar, footer, background
+  /sections       — Page sections
+  /animations     — Framer Motion wrappers
+/data             — Placeholder content (easy to replace)
+/constants        — Site config and navigation
+/hooks            — Custom React hooks
+/lib              — Utilities
+/types            — TypeScript types
+/public           — Static assets
+```
+
+## License
+
+MIT
