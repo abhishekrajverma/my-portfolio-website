@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,6 +11,17 @@ export function NewsletterForm() {
     "idle"
   );
   const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    if (!message || status === "loading") return;
+
+    const timer = window.setTimeout(() => {
+      setMessage("");
+      setStatus("idle");
+    }, 5000);
+
+    return () => window.clearTimeout(timer);
+  }, [message, status]);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
