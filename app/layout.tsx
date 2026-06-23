@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { AnimatedBackground } from "@/components/layout/animated-background";
 import { Navbar } from "@/components/layout/navbar";
@@ -91,6 +92,7 @@ export default function RootLayout({
             <BackToTop />
             <HashScrollHandler />
           </TooltipProvider>
+          <SpeedInsights />
         </ThemeProvider>
       </body>
     </html>

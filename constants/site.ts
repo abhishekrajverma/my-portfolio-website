@@ -1,18 +1,20 @@
+import { env } from "@/lib/env";
+
 export const siteConfig = {
-  name: "Abhishek Raj",
-  title: "Abhishek Raj | Data Analyst Portfolio",
+  name: env.siteName,
+  title: `${env.siteName} | Data Analyst Portfolio`,
   description:
     "Data Analyst and MIS Executive specializing in SQL Server, Power BI, Advanced Excel, and business reporting. Delivering automated dashboards and actionable KPI insights.",
-  url: "https://abhishekraj.dev",
+  url: env.siteUrl,
   ogImage: "/og-image.png",
-  author: "Abhishek Raj",
+  author: env.siteName,
   role: "Data Analyst | MIS Executive",
-  email: "abhishekr359@gmail.com",
-  phone: "+91-9262648753",
-  location: "Haryana, India",
+  email: env.email,
+  phone: env.phone,
+  location: env.location,
   resumeUrl: "/resume.html",
   resumeDownloadName: "Abhishek_Raj_Resume.html",
-  linkedin: "https://linkedin.com/in/abhishekrajverma",
+  linkedin: env.linkedin,
   keywords: [
     "Data Analyst",
     "MIS Executive",
@@ -29,17 +31,17 @@ export const siteConfig = {
 export const socialLinks = [
   {
     name: "LinkedIn",
-    url: "https://linkedin.com/in/abhishekrajverma",
+    url: env.linkedin,
     icon: "linkedin",
   },
   {
     name: "Email",
-    url: "mailto:abhishekr359@gmail.com",
+    url: `mailto:${env.email}`,
     icon: "mail",
   },
   {
     name: "Phone",
-    url: "tel:+919262648753",
+    url: `tel:${env.phone.replace(/\s/g, "")}`,
     icon: "phone",
   },
 ];
