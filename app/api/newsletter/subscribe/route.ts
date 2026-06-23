@@ -1,5 +1,10 @@
 import { NextResponse } from "next/server";
-import { isNewsletterConfigured } from "@/lib/newsletter/config";
+import {
+  getNewsletterSetupError,
+  getSubscriberStorageError,
+  isNewsletterConfigured,
+  isSubscriberStorageConfigured,
+} from "@/lib/newsletter/config";
 import {
   isValidEmail,
   subscribeEmail,
@@ -10,7 +15,14 @@ import { sendWelcomeEmail } from "@/lib/newsletter/welcome";
 export async function POST(request: Request) {
   if (!isNewsletterConfigured()) {
     return NextResponse.json(
-      { error: "Newsletter is not configured yet." },
+      { error: getNewsletterSetupError() },
+      { status: 503 }
+    );
+  }
+
+  if (!isSubscriberStorageConfigured()) {
+    return NextResponse.json(
+      { error: getSubscriberStorageError() },
       { status: 503 }
     );
   }

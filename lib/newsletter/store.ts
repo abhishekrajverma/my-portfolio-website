@@ -1,14 +1,42 @@
 import { promises as fs } from "node:fs";
 import path from "node:path";
 import { Redis } from "@upstash/redis";
-import { isRedisConfigured } from "@/lib/newsletter/config";
+import {
+  isBlobStorageConfigured,
+  readSubscribersFromBlob,
+  writeSubscribersToBlob,
+} from "@/lib/newsletter/blob-store";
+import {
+  getSubscriberStorageError,
+  isRedisConfigured,
+  isSubscriberStorageConfigured,
+} from "@/lib/newsletter/config";
 
 const SUBSCRIBERS_KEY = "newsletter:subscribers";
 const FILE_PATH = path.join(process.cwd(), "data", "subscribers.json");
 
 function getRedis(): Redis | null {
   if (!isRedisConfigured()) return null;
-  return Redis.fromEnv();
+
+  const upstashUrl = process.env.UPSTASH_REDIS_REST_URL?.trim();
+  const upstashToken = process.env.UPSTASH_REDIS_REST_TOKEN?.trim();
+  if (upstashUrl && upstashToken) {
+    return new Redis({ url: upstashUrl, token: upstashToken });
+  }
+
+  const kvUrl = process.env.KV_REST_API_URL?.trim();
+  const kvToken = process.env.KV_REST_API_TOKEN?.trim();
+  if (kvUrl && kvToken) {
+    return new Redis({ url: kvUrl, token: kvToken });
+  }
+
+  return null;
+}
+
+function assertSubscriberStorage(): void {
+  if (!isSubscriberStorageConfigured()) {
+    throw new Error(getSubscriberStorageError());
+  }
 }
 
 async function readFromFile(): Promise<string[]> {
@@ -28,7 +56,7 @@ async function writeToFile(emails: string[]): Promise<void> {
   await fs.writeFile(FILE_PATH, JSON.stringify(emails, null, 2));
 }
 
-export async function getSubscribers(): Promise<string[]> {
+async function readSubscribers(): Promise<string[]> {
   const redis = getRedis();
   if (redis) {
     const members = await redis.smembers(SUBSCRIBERS_KEY);
@@ -36,7 +64,34 @@ export async function getSubscribers(): Promise<string[]> {
       ? members.filter((item): item is string => typeof item === "string")
       : [];
   }
+
+  if (isBlobStorageConfigured()) {
+    return readSubscribersFromBlob();
+  }
+
   return readFromFile();
+}
+
+async function writeSubscribers(emails: string[]): Promise<void> {
+  const redis = getRedis();
+  if (redis) {
+    await redis.del(SUBSCRIBERS_KEY);
+    for (const subscriber of emails) {
+      await redis.sadd(SUBSCRIBERS_KEY, subscriber);
+    }
+    return;
+  }
+
+  if (isBlobStorageConfigured()) {
+    await writeSubscribersToBlob(emails);
+    return;
+  }
+
+  await writeToFile(emails);
+}
+
+export async function getSubscribers(): Promise<string[]> {
+  return readSubscribers();
 }
 
 export async function addSubscriber(email: string): Promise<boolean> {
@@ -48,13 +103,15 @@ export async function addSubscriber(email: string): Promise<boolean> {
     return added === 1;
   }
 
-  const emails = await readFromFile();
+  assertSubscriberStorage();
+
+  const emails = await readSubscribers();
   if (emails.includes(normalized)) {
     return false;
   }
 
   emails.push(normalized);
-  await writeToFile(emails);
+  await writeSubscribers(emails);
   return true;
 }
 
@@ -67,13 +124,17 @@ export async function removeSubscriber(email: string): Promise<void> {
     return;
   }
 
-  const emails = await readFromFile();
-  await writeToFile(emails.filter((item) => item !== normalized));
+  assertSubscriberStorage();
+
+  const emails = await readSubscribers();
+  await writeSubscribers(emails.filter((item) => item !== normalized));
 }
 
 export async function ensureSubscriberStore(): Promise<void> {
   const redis = getRedis();
-  if (redis) return;
+  if (redis || isBlobStorageConfigured()) return;
+
+  assertSubscriberStorage();
 
   try {
     await fs.access(FILE_PATH);
