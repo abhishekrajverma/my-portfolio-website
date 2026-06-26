@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
   Mail,
   MapPin,
@@ -20,6 +21,12 @@ const iconMap: Record<string, React.ReactNode> = {
 };
 
 export function Footer() {
+  const pathname = usePathname();
+
+  if (pathname.startsWith("/admin")) {
+    return null;
+  }
+
   return (
     <footer className="border-t border-border bg-muted/20">
       <div className="container-custom section-padding !py-16">

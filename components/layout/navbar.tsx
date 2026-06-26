@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Menu,
@@ -20,6 +21,7 @@ import { CommandMenu } from "@/components/layout/command-menu";
 import { cn } from "@/lib/utils";
 
 export function Navbar() {
+  const pathname = usePathname();
   const scrolled = useScroll(20);
   const progress = useScrollProgress();
   const { resolvedTheme, setTheme } = useTheme();
@@ -50,6 +52,10 @@ export function Navbar() {
     document.addEventListener("keydown", down);
     return () => document.removeEventListener("keydown", down);
   }, []);
+
+  if (pathname.startsWith("/admin")) {
+    return null;
+  }
 
   return (
     <>

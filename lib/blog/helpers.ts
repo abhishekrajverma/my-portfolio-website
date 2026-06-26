@@ -38,3 +38,17 @@ export function getRecommendedFromPosts(
 
   return [...sameCategory, ...otherCategories].slice(0, limit);
 }
+
+export function slugifyTitle(title: string): string {
+  return title
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
+export function estimateReadTime(content: string): string {
+  const words = content.trim().split(/\s+/).filter(Boolean).length;
+  const minutes = Math.max(1, Math.ceil(words / 200));
+  return `${minutes} min read`;
+}

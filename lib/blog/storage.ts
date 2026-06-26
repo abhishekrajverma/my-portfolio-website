@@ -110,3 +110,36 @@ export async function uploadBlogPostToStorage(post: BlogPost): Promise<void> {
     throw new Error(error.message);
   }
 }
+
+export async function deleteBlogPostFromStorage(slug: string): Promise<void> {
+  const supabase = getSupabaseAdmin();
+  const { error } = await supabase.storage
+    .from(BLOG_STORAGE_BUCKET)
+    .remove([getPostStoragePath(slug)]);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+}
+
+export async function uploadBlogImage(
+  fileName: string,
+  file: Blob,
+  contentType: string
+): Promise<string> {
+  const supabase = getSupabaseAdmin();
+  const path = `images/${fileName}`;
+
+  const { error } = await supabase.storage
+    .from(BLOG_STORAGE_BUCKET)
+    .upload(path, file, {
+      contentType,
+      upsert: true,
+    });
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return getBlogStoragePublicUrl(path);
+}
