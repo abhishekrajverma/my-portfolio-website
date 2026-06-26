@@ -18,11 +18,12 @@ import { getNavSections } from "@/constants/navigation";
 import { siteConfig } from "@/constants/site";
 import { Button } from "@/components/ui/button";
 import { CommandMenu } from "@/components/layout/command-menu";
+import { BrandAvatar } from "@/components/layout/brand-avatar";
 import { NavItem } from "@/components/layout/nav-item";
 import { NavMobileMenu } from "@/components/layout/nav-mobile-menu";
 import { cn } from "@/lib/utils";
 
-export function Navbar() {
+export function Navbar({ avatarUrl }: { avatarUrl: string }) {
   const pathname = usePathname();
   const navSections = getNavSections(pathname);
   const scrolled = useScroll(20);
@@ -79,9 +80,7 @@ export function Navbar() {
         />
         <nav className="container-custom flex h-14 items-center justify-between gap-3 px-4 sm:h-16 sm:px-6">
           <SectionLink href="/#hero" className="flex items-center gap-2 group">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-secondary text-sm font-bold text-white">
-              AR
-            </div>
+            <BrandAvatar avatarUrl={avatarUrl} alt={siteConfig.name} size="sm" />
             <span className="hidden font-semibold sm:block group-hover:text-primary transition-colors">
               {siteConfig.name.split(" ")[0]}
             </span>

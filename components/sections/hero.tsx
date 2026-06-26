@@ -1,7 +1,8 @@
-import Image from "next/image";
 import { Download, Mail } from "lucide-react";
 import { profile } from "@/data/profile";
 import { siteConfig } from "@/constants/site";
+import { getProfileAvatarUrl } from "@/lib/profile/avatar";
+import { ProfileAvatarImage } from "@/components/profile/profile-avatar-image";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { HeroRole } from "@/components/sections/hero-role";
@@ -10,7 +11,9 @@ import { HeroScrollHint } from "@/components/sections/hero-scroll-hint";
 
 const descriptionText = `${profile.tagline}. Specializing in ${profile.techStack.join(" · ")} to drive data-informed decisions.`;
 
-export function HeroSection() {
+export async function HeroSection() {
+  const avatarUrl = await getProfileAvatarUrl();
+
   return (
     <section
       id="hero"
@@ -63,16 +66,14 @@ export function HeroSection() {
 
           <div className="order-1 relative mx-auto w-full max-w-md lg:order-2 lg:max-w-lg">
             <div className="relative aspect-square overflow-hidden rounded-2xl border border-border bg-card">
-              <Image
-                src={profile.avatar}
+              <ProfileAvatarImage
+                src={avatarUrl}
                 alt={profile.name}
                 width={500}
                 height={500}
                 sizes="(max-width: 1024px) 80vw, 500px"
-                quality={80}
-                className="aspect-square h-full w-full object-cover"
+                className="aspect-square h-full w-full"
                 priority
-                fetchPriority="high"
               />
             </div>
           </div>

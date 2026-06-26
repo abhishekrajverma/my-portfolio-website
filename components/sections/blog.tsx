@@ -16,9 +16,10 @@ import {
 
 interface BlogSectionProps {
   posts: BlogPostSummary[];
+  avatarUrl: string;
 }
 
-export function BlogSection({ posts }: BlogSectionProps) {
+export function BlogSection({ posts, avatarUrl }: BlogSectionProps) {
   const [activeCategory, setActiveCategory] = useState<BlogCategoryFilter>("All");
 
   const filtered = useMemo(() => {
@@ -59,7 +60,7 @@ export function BlogSection({ posts }: BlogSectionProps) {
           <StaggerContainer key={activeCategory}>
             {filtered.map((post, index) => (
               <StaggerItem key={post.slug}>
-                <BlogFeedCard post={post} featured={index === 0} />
+                <BlogFeedCard post={post} avatarUrl={avatarUrl} featured={index === 0} />
               </StaggerItem>
             ))}
           </StaggerContainer>

@@ -7,9 +7,14 @@ import { Button } from "@/components/ui/button";
 interface RecommendedBlogsProps {
   posts: BlogPostSummary[];
   currentCategory: BlogPost["category"];
+  avatarUrl: string;
 }
 
-export function RecommendedBlogs({ posts, currentCategory }: RecommendedBlogsProps) {
+export function RecommendedBlogs({
+  posts,
+  currentCategory,
+  avatarUrl,
+}: RecommendedBlogsProps) {
   if (posts.length === 0) return null;
 
   return (
@@ -26,7 +31,7 @@ export function RecommendedBlogs({ posts, currentCategory }: RecommendedBlogsPro
 
       <div>
         {posts.map((post) => (
-          <BlogFeedCard key={post.slug} post={post} />
+          <BlogFeedCard key={post.slug} post={post} avatarUrl={avatarUrl} />
         ))}
       </div>
 

@@ -13,6 +13,7 @@ import { siteConfig, socialLinks } from "@/constants/site";
 import { getNavLinks } from "@/constants/navigation";
 import { Separator } from "@/components/ui/separator";
 import { NewsletterForm } from "@/components/layout/newsletter-form";
+import { BrandAvatar } from "@/components/layout/brand-avatar";
 
 const iconMap: Record<string, React.ReactNode> = {
   linkedin: <LinkedInIcon />,
@@ -23,7 +24,7 @@ const iconMap: Record<string, React.ReactNode> = {
 
 const externalIcons = new Set(["linkedin", "github"]);
 
-export function Footer() {
+export function Footer({ avatarUrl }: { avatarUrl: string }) {
   const pathname = usePathname();
   const navLinks = getNavLinks(pathname);
 
@@ -37,9 +38,7 @@ export function Footer() {
         <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
           <div className="space-y-4">
             <div className="flex items-center gap-2">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-secondary text-sm font-bold text-white">
-                AR
-              </div>
+              <BrandAvatar avatarUrl={avatarUrl} alt={siteConfig.name} size="sm" />
               <span className="font-semibold">{siteConfig.name}</span>
             </div>
             <p className="text-sm text-muted-foreground leading-relaxed">

@@ -7,7 +7,7 @@ import { LoadingScreen } from "@/components/layout/loading-screen";
 
 const MIN_SPLASH_MS = 1400;
 
-export function AppSplash() {
+export function AppSplash({ avatarUrl }: { avatarUrl: string }) {
   const pathname = usePathname();
   const [visible, setVisible] = useState(true);
 
@@ -45,7 +45,7 @@ export function AppSplash() {
           exit={{ opacity: 0 }}
           transition={{ duration: 0.4, ease: "easeOut" }}
         >
-          <LoadingScreen />
+          <LoadingScreen avatarUrl={avatarUrl} />
         </motion.div>
       ) : null}
     </AnimatePresence>

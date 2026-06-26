@@ -1,15 +1,17 @@
-import Image from "next/image";
+import { ProfileAvatarImage } from "@/components/profile/profile-avatar-image";
 import { Clock } from "lucide-react";
 import { siteConfig } from "@/constants/site";
 import { formatDate } from "@/lib/utils";
 
 interface BlogAuthorMetaProps {
+  avatarUrl: string;
   date: string;
   readTime: string;
   className?: string;
 }
 
 export function BlogAuthorMeta({
+  avatarUrl,
   date,
   readTime,
   className = "",
@@ -17,11 +19,10 @@ export function BlogAuthorMeta({
   return (
     <div className={`flex items-center gap-3 ${className}`}>
       <div className="relative h-11 w-11 shrink-0 overflow-hidden rounded-full ring-1 ring-border">
-        <Image
-          src="/my-photo.jpeg"
+        <ProfileAvatarImage
+          src={avatarUrl}
           alt={siteConfig.author}
           fill
-          className="object-cover"
           sizes="44px"
         />
       </div>

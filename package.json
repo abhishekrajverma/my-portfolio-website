@@ -10,7 +10,8 @@
     "newsletter:notify": "node --env-file=.env.local scripts/notify-blog-subscribers.mjs",
     "email:test": "node --env-file=.env.local scripts/send-test-email.mjs",
     "newsletter:setup": "node --env-file=.env.local scripts/setup-newsletter.mjs",
-    "blog:seed": "tsx --env-file=.env.local scripts/seed-blog-storage.ts"
+    "blog:seed": "tsx --env-file=.env.local scripts/seed-blog-storage.ts",
+    "profile:seed": "tsx --env-file=.env.local scripts/seed-profile-storage.ts"
   },
   "dependencies": {
     "@radix-ui/react-avatar": "^1.2.0",

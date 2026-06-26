@@ -15,9 +15,10 @@ import { Button } from "@/components/ui/button";
 
 interface BlogPostsPageProps {
   posts: BlogPostSummary[];
+  avatarUrl: string;
 }
 
-export function BlogPostsPage({ posts }: BlogPostsPageProps) {
+export function BlogPostsPage({ posts, avatarUrl }: BlogPostsPageProps) {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
@@ -75,7 +76,7 @@ export function BlogPostsPage({ posts }: BlogPostsPageProps) {
 
         <div key={activeCategory}>
           {filtered.map((post, index) => (
-            <BlogFeedCard key={post.slug} post={post} featured={index === 0} />
+            <BlogFeedCard key={post.slug} post={post} avatarUrl={avatarUrl} featured={index === 0} />
           ))}
         </div>
 

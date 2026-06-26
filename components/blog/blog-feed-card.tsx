@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { ProfileAvatarImage } from "@/components/profile/profile-avatar-image";
 import Link from "next/link";
 import { Clock } from "lucide-react";
 import type { BlogPostSummary } from "@/lib/blog/helpers";
@@ -7,10 +8,11 @@ import { formatDate } from "@/lib/utils";
 
 interface BlogFeedCardProps {
   post: BlogPostSummary;
+  avatarUrl: string;
   featured?: boolean;
 }
 
-export function BlogFeedCard({ post, featured = false }: BlogFeedCardProps) {
+export function BlogFeedCard({ post, avatarUrl, featured = false }: BlogFeedCardProps) {
   return (
     <article className="group border-b border-border py-8 first:pt-0 last:border-b-0">
       <Link
@@ -20,11 +22,10 @@ export function BlogFeedCard({ post, featured = false }: BlogFeedCardProps) {
         <div className="min-w-0 space-y-3">
           <div className="flex items-center gap-2.5">
             <div className="relative h-6 w-6 shrink-0 overflow-hidden rounded-full ring-1 ring-border">
-              <Image
-                src="/my-photo.jpeg"
+              <ProfileAvatarImage
+                src={avatarUrl}
                 alt={siteConfig.author}
                 fill
-                className="object-cover"
                 sizes="24px"
               />
             </div>

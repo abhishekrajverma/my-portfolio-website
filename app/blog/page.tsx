@@ -2,15 +2,19 @@ import { Suspense } from "react";
 import { BlogPostsPage } from "@/components/blog/blog-posts-page";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { getBlogPostSummaries } from "@/lib/blog/repository";
+import { getProfileAvatarUrl } from "@/lib/profile/avatar";
 
 export const revalidate = 300;
 
 export default async function BlogPage() {
-  const posts = await getBlogPostSummaries();
+  const [posts, avatarUrl] = await Promise.all([
+    getBlogPostSummaries(),
+    getProfileAvatarUrl(),
+  ]);
 
   return (
     <Suspense fallback={<BlogPageFallback />}>
-      <BlogPostsPage posts={posts} />
+      <BlogPostsPage posts={posts} avatarUrl={avatarUrl} />
     </Suspense>
   );
 }

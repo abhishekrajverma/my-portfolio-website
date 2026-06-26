@@ -11,6 +11,7 @@ import {
 import { markdownToHtml } from "@/lib/blog";
 import { BlogAuthorMeta } from "@/components/blog/blog-author-meta";
 import { RecommendedBlogs } from "@/components/blog/recommended-blogs";
+import { getProfileAvatarUrl } from "@/lib/profile/avatar";
 import { formatDate } from "@/lib/utils";
 
 export const revalidate = 300;
@@ -50,7 +51,10 @@ export default async function BlogPostPage({
   if (!post) notFound();
 
   const contentHtml = await markdownToHtml(post.content);
-  const recommendedPosts = await getRecommendedBlogPosts(slug, 3);
+  const [recommendedPosts, avatarUrl] = await Promise.all([
+    getRecommendedBlogPosts(slug, 3),
+    getProfileAvatarUrl(),
+  ]);
 
   return (
     <article className="section-padding pt-28">
@@ -79,7 +83,11 @@ export default async function BlogPostPage({
             {post.excerpt}
           </p>
 
-          <BlogAuthorMeta date={post.date} readTime={post.readTime} />
+          <BlogAuthorMeta
+            avatarUrl={avatarUrl}
+            date={post.date}
+            readTime={post.readTime}
+          />
 
           <p className="text-xs text-muted-foreground">
             Published {formatDate(post.date)}
@@ -107,6 +115,7 @@ export default async function BlogPostPage({
         <RecommendedBlogs
           posts={recommendedPosts}
           currentCategory={post.category}
+          avatarUrl={avatarUrl}
         />
       </div>
     </article>

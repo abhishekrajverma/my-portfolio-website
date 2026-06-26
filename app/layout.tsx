@@ -11,6 +11,7 @@ import { BackToTop } from "@/components/layout/back-to-top";
 import { HashScrollHandler } from "@/components/layout/hash-scroll";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { siteConfig } from "@/constants/site";
+import { getProfileAvatarUrl } from "@/lib/profile/avatar";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -25,7 +26,7 @@ const geistMono = Geist_Mono({
   display: "swap",
 });
 
-export const metadata: Metadata = {
+const baseMetadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
   title: {
     default: siteConfig.title,
@@ -35,28 +36,6 @@ export const metadata: Metadata = {
   keywords: siteConfig.keywords,
   authors: [{ name: siteConfig.author }],
   creator: siteConfig.author,
-  openGraph: {
-    type: "website",
-    locale: "en_US",
-    url: siteConfig.url,
-    title: siteConfig.title,
-    description: siteConfig.description,
-    siteName: siteConfig.name,
-    images: [
-      {
-        url: siteConfig.ogImage,
-        width: 1200,
-        height: 630,
-        alt: siteConfig.title,
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: siteConfig.title,
-    description: siteConfig.description,
-    images: [siteConfig.ogImage],
-  },
   robots: {
     index: true,
     follow: true,
@@ -70,12 +49,48 @@ export const metadata: Metadata = {
   },
 };
 
+export async function generateMetadata(): Promise<Metadata> {
+  const avatarUrl = await getProfileAvatarUrl();
+
+  return {
+    ...baseMetadata,
+    icons: {
+      icon: [{ url: avatarUrl, type: "image/jpeg" }],
+      apple: [{ url: avatarUrl, type: "image/jpeg" }],
+      shortcut: avatarUrl,
+    },
+    openGraph: {
+      type: "website",
+      locale: "en_US",
+      url: siteConfig.url,
+      title: siteConfig.title,
+      description: siteConfig.description,
+      siteName: siteConfig.name,
+      images: [
+        {
+          url: avatarUrl,
+          width: 500,
+          height: 500,
+          alt: siteConfig.name,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary",
+      title: siteConfig.title,
+      description: siteConfig.description,
+      images: [avatarUrl],
+    },
+  };
+}
+
 export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  preload("/my-photo.jpeg", { as: "image", fetchPriority: "high" });
+  const avatarUrl = await getProfileAvatarUrl();
+  preload(avatarUrl, { as: "image", fetchPriority: "high" });
 
   return (
     <html
@@ -91,11 +106,11 @@ export default async function RootLayout({
           disableTransitionOnChange
         >
           <TooltipProvider>
-            <AppSplash />
+            <AppSplash avatarUrl={avatarUrl} />
             <LazyAnimatedBackground />
-            <Navbar />
+            <Navbar avatarUrl={avatarUrl} />
             <main className="flex-1">{children}</main>
-            <Footer />
+            <Footer avatarUrl={avatarUrl} />
             <BackToTop />
             <HashScrollHandler />
           </TooltipProvider>

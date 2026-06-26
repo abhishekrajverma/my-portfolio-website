@@ -1,9 +1,12 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { ProfileAvatarImage } from "@/components/profile/profile-avatar-image";
+import { profile } from "@/data/profile";
+import { PROFILE_AVATAR_FALLBACK } from "@/lib/profile/constants";
 import { siteConfig } from "@/constants/site";
 
-export function LoadingScreen() {
+export function LoadingScreen({ avatarUrl = PROFILE_AVATAR_FALLBACK }: { avatarUrl?: string }) {
   const firstName = siteConfig.name.split(" ")[0];
 
   return (
@@ -40,15 +43,18 @@ export function LoadingScreen() {
                 animate={{ opacity: [0.5, 1, 0.5] }}
                 transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
               />
-              <motion.div
-                className="relative flex h-16 w-16 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-secondary text-xl font-bold text-white shadow-lg"
-              >
+              <motion.div className="relative h-16 w-16 overflow-hidden rounded-xl shadow-lg ring-2 ring-white/20">
                 <motion.span
-                  className="absolute inset-1 rounded-lg border-2 border-white/20 border-t-white"
+                  className="pointer-events-none absolute inset-0 z-20 rounded-xl border-2 border-white/20 border-t-white"
                   animate={{ rotate: 360 }}
                   transition={{ duration: 1.4, repeat: Infinity, ease: "linear" }}
                 />
-                <span className="relative">AR</span>
+                <ProfileAvatarImage
+                  src={avatarUrl}
+                  alt={profile.name}
+                  fill
+                  sizes="64px"
+                />
               </motion.div>
             </div>
 
