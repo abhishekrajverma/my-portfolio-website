@@ -1,5 +1,6 @@
 import { env } from "@/lib/env";
 import { isBlobStorageConfigured } from "@/lib/newsletter/blob-store";
+import { isSupabaseConfigured } from "@/lib/supabase/config";
 
 function hasSmtpConfig(): boolean {
   return Boolean(
@@ -27,7 +28,12 @@ export function getNewsletterSetupError(): string {
 }
 
 export function isSubscriberStorageConfigured(): boolean {
-  return isRedisConfigured() || isBlobStorageConfigured() || !process.env.VERCEL;
+  return (
+    isSupabaseConfigured() ||
+    isRedisConfigured() ||
+    isBlobStorageConfigured() ||
+    !process.env.VERCEL
+  );
 }
 
 export function getSubscriberStorageError(): string {
@@ -35,7 +41,7 @@ export function getSubscriberStorageError(): string {
     return "";
   }
 
-  return "Subscriber storage is not set up on Vercel. Add Vercel Blob or Upstash Redis, then redeploy.";
+  return "Subscriber storage is not set up on Vercel. Add Supabase, Vercel Blob, or Upstash Redis, then redeploy.";
 }
 
 export function getNewsletterConfig() {

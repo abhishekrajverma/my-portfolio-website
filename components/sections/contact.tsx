@@ -56,6 +56,7 @@ const contactInfo = [
 
 export function ContactSection() {
   const [submitted, setSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState("");
   const {
     register,
     handleSubmit,
@@ -64,11 +65,32 @@ export function ContactSection() {
   } = useForm<ContactForm>();
 
   const onSubmit = async (data: ContactForm) => {
-    await new Promise((r) => setTimeout(r, 1000));
-    console.log("Form submitted:", data);
-    setSubmitted(true);
-    reset();
-    setTimeout(() => setSubmitted(false), 5000);
+    setSubmitError("");
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      const result = (await response.json()) as {
+        message?: string;
+        error?: string;
+      };
+
+      if (!response.ok) {
+        throw new Error(result.error || "Failed to send message.");
+      }
+
+      setSubmitted(true);
+      reset();
+      setTimeout(() => setSubmitted(false), 5000);
+    } catch (error) {
+      setSubmitError(
+        error instanceof Error ? error.message : "Failed to send message."
+      );
+    }
   };
 
   return (
@@ -202,6 +224,9 @@ export function ContactSection() {
                         <p className="text-xs text-red-400">{errors.message.message}</p>
                       )}
                     </div>
+                    {submitError ? (
+                      <p className="text-sm text-red-400">{submitError}</p>
+                    ) : null}
                     <Button
                       type="submit"
                       variant="gradient"

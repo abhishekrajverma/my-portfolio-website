@@ -11,6 +11,12 @@ import {
   isRedisConfigured,
   isSubscriberStorageConfigured,
 } from "@/lib/newsletter/config";
+import {
+  addSubscriberToSupabase,
+  getSubscribersFromSupabase,
+  removeSubscriberFromSupabase,
+} from "@/lib/newsletter/supabase-store";
+import { isSupabaseConfigured } from "@/lib/supabase/config";
 
 const SUBSCRIBERS_KEY = "newsletter:subscribers";
 const FILE_PATH = path.join(process.cwd(), "data", "subscribers.json");
@@ -57,6 +63,10 @@ async function writeToFile(emails: string[]): Promise<void> {
 }
 
 async function readSubscribers(): Promise<string[]> {
+  if (isSupabaseConfigured()) {
+    return getSubscribersFromSupabase();
+  }
+
   const redis = getRedis();
   if (redis) {
     const members = await redis.smembers(SUBSCRIBERS_KEY);
@@ -96,6 +106,11 @@ export async function getSubscribers(): Promise<string[]> {
 
 export async function addSubscriber(email: string): Promise<boolean> {
   const normalized = email.trim().toLowerCase();
+
+  if (isSupabaseConfigured()) {
+    return addSubscriberToSupabase(normalized);
+  }
+
   const redis = getRedis();
 
   if (redis) {
@@ -117,6 +132,12 @@ export async function addSubscriber(email: string): Promise<boolean> {
 
 export async function removeSubscriber(email: string): Promise<void> {
   const normalized = email.trim().toLowerCase();
+
+  if (isSupabaseConfigured()) {
+    await removeSubscriberFromSupabase(normalized);
+    return;
+  }
+
   const redis = getRedis();
 
   if (redis) {
@@ -131,6 +152,8 @@ export async function removeSubscriber(email: string): Promise<void> {
 }
 
 export async function ensureSubscriberStore(): Promise<void> {
+  if (isSupabaseConfigured()) return;
+
   const redis = getRedis();
   if (redis || isBlobStorageConfigured()) return;
 
