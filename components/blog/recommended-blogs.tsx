@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Clock } from "lucide-react";
+import type { BlogPostSummary } from "@/lib/blog/helpers";
 import type { BlogPost } from "@/types";
 import { GlassCard } from "@/components/ui/glass-card";
 import { Badge } from "@/components/ui/badge";
@@ -9,7 +10,7 @@ import { Separator } from "@/components/ui/separator";
 import { formatDate } from "@/lib/utils";
 
 interface RecommendedBlogsProps {
-  posts: BlogPost[];
+  posts: BlogPostSummary[];
   currentCategory: BlogPost["category"];
 }
 

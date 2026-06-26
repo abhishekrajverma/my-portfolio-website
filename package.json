@@ -9,7 +9,8 @@
     "lint": "eslint",
     "newsletter:notify": "node --env-file=.env.local scripts/notify-blog-subscribers.mjs",
     "email:test": "node --env-file=.env.local scripts/send-test-email.mjs",
-    "newsletter:setup": "node --env-file=.env.local scripts/setup-newsletter.mjs"
+    "newsletter:setup": "node --env-file=.env.local scripts/setup-newsletter.mjs",
+    "blog:seed": "tsx --env-file=.env.local scripts/seed-blog-storage.ts"
   },
   "dependencies": {
     "@radix-ui/react-avatar": "^1.2.0",
@@ -52,6 +53,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.2.9",
     "tailwindcss": "^4",
+    "tsx": "^4.22.4",
     "typescript": "^5"
   }
 }

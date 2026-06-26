@@ -4,8 +4,9 @@ import { useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Clock } from "lucide-react";
-import { blogPosts, getBlogPostsByCategory } from "@/data/blog";
 import { type BlogCategoryFilter } from "@/constants/blog";
+import { filterBlogPostsByCategory } from "@/lib/blog/helpers";
+import type { BlogPostSummary } from "@/lib/blog/helpers";
 import { BlogCategoryFilterBar } from "@/components/blog/blog-category-filter";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { GlassCard } from "@/components/ui/glass-card";
@@ -18,13 +19,17 @@ import {
 } from "@/components/animations/motion-wrapper";
 import { formatDate } from "@/lib/utils";
 
-export function BlogSection() {
+interface BlogSectionProps {
+  posts: BlogPostSummary[];
+}
+
+export function BlogSection({ posts }: BlogSectionProps) {
   const [activeCategory, setActiveCategory] = useState<BlogCategoryFilter>("All");
 
   const filtered = useMemo(() => {
-    const posts = getBlogPostsByCategory(activeCategory);
-    return posts.slice(0, 3);
-  }, [activeCategory]);
+    const categoryPosts = filterBlogPostsByCategory(posts, activeCategory);
+    return categoryPosts.slice(0, 3);
+  }, [activeCategory, posts]);
 
   const viewAllHref =
     activeCategory === "All"

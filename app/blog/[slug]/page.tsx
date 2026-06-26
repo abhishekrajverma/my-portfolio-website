@@ -4,18 +4,21 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, Clock } from "lucide-react";
 import {
-  blogPosts,
+  getAllBlogSlugs,
   getBlogPostBySlug,
   getRecommendedBlogPosts,
-} from "@/data/blog";
+} from "@/lib/blog/repository";
 import { markdownToHtml } from "@/lib/blog";
 import { RecommendedBlogs } from "@/components/blog/recommended-blogs";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { formatDate } from "@/lib/utils";
 
+export const revalidate = 300;
+
 export async function generateStaticParams() {
-  return blogPosts.map((p) => ({ slug: p.slug }));
+  const slugs = await getAllBlogSlugs();
+  return slugs.map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({
@@ -24,7 +27,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const post = getBlogPostBySlug(slug);
+  const post = await getBlogPostBySlug(slug);
   if (!post) return { title: "Article Not Found" };
 
   return {
@@ -44,11 +47,11 @@ export default async function BlogPostPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const post = getBlogPostBySlug(slug);
+  const post = await getBlogPostBySlug(slug);
   if (!post) notFound();
 
   const contentHtml = await markdownToHtml(post.content);
-  const recommendedPosts = getRecommendedBlogPosts(slug, 3);
+  const recommendedPosts = await getRecommendedBlogPosts(slug, 3);
 
   return (
     <article className="section-padding pt-28">

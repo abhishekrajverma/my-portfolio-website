@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getBlogPostBySlug, getLatestBlogPost } from "@/data/blog";
+import { getBlogPostBySlug, getLatestBlogPost } from "@/lib/blog/repository";
 import { isNewsletterConfigured } from "@/lib/newsletter/config";
 import { notifySubscribersAboutPost } from "@/lib/newsletter/notify";
 
@@ -33,8 +33,8 @@ export async function POST(request: Request) {
     };
 
     const post = body.slug
-      ? getBlogPostBySlug(body.slug)
-      : getLatestBlogPost();
+      ? await getBlogPostBySlug(body.slug)
+      : await getLatestBlogPost();
 
     if (!post) {
       return NextResponse.json({ error: "Blog post not found." }, { status: 404 });

@@ -1,5 +1,6 @@
 import dynamic from "next/dynamic";
 import { HeroSection } from "@/components/sections/hero";
+import { getBlogPostSummaries } from "@/lib/blog/repository";
 
 const AboutSection = dynamic(() =>
   import("@/components/sections/about").then((m) => m.AboutSection)
@@ -29,7 +30,11 @@ const ContactSection = dynamic(() =>
   import("@/components/sections/contact").then((m) => m.ContactSection)
 );
 
-export default function HomePage() {
+export const revalidate = 300;
+
+export default async function HomePage() {
+  const blogPosts = await getBlogPostSummaries();
+
   return (
     <>
       <HeroSection />
@@ -38,7 +43,7 @@ export default function HomePage() {
       <ProjectsSection />
       <DashboardSection />
       <CertificationsSection />
-      <BlogSection />
+      <BlogSection posts={blogPosts} />
       <TestimonialsSection />
       <FAQSection />
       <ContactSection />

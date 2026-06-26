@@ -201,34 +201,3 @@ Use the STAR method: Situation, Task, Action, Result.`,
 7. **Tell a story** — Guide the eye through the narrative`,
   },
 ];
-
-export function getBlogPostBySlug(slug: string): BlogPost | undefined {
-  return blogPosts.find((p) => p.slug === slug);
-}
-
-export function getLatestBlogPost(): BlogPost | undefined {
-  return [...blogPosts].sort(
-    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-  )[0];
-}
-
-export function getBlogPostsByCategory(
-  category: BlogPost["category"] | "All"
-): BlogPost[] {
-  if (category === "All") return blogPosts;
-  return blogPosts.filter((p) => p.category === category);
-}
-
-export function getRecommendedBlogPosts(
-  currentSlug: string,
-  limit = 3
-): BlogPost[] {
-  const current = getBlogPostBySlug(currentSlug);
-  if (!current) return blogPosts.filter((p) => p.slug !== currentSlug).slice(0, limit);
-
-  const others = blogPosts.filter((p) => p.slug !== currentSlug);
-  const sameCategory = others.filter((p) => p.category === current.category);
-  const otherCategories = others.filter((p) => p.category !== current.category);
-
-  return [...sameCategory, ...otherCategories].slice(0, limit);
-}
