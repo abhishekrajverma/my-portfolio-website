@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { preload } from "react-dom";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { ThemeProvider } from "@wrksz/themes/next";
+import { AppSplash } from "@/components/layout/app-splash";
 import { LazyAnimatedBackground } from "@/components/layout/lazy-animated-background";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
@@ -80,7 +81,7 @@ export default async function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${geistSans.variable} ${geistMono.variable} dark h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
         <ThemeProvider
@@ -90,6 +91,7 @@ export default async function RootLayout({
           disableTransitionOnChange
         >
           <TooltipProvider>
+            <AppSplash />
             <LazyAnimatedBackground />
             <Navbar />
             <main className="flex-1">{children}</main>

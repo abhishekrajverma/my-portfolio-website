@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
+import { SectionLink } from "@/components/layout/section-link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ExternalLink } from "lucide-react";
 import { GitHubIcon } from "@/components/icons/social-icons";
@@ -47,10 +47,10 @@ export default async function ProjectPage({
     <article className="section-padding pt-28">
       <div className="container-custom max-w-4xl">
         <Button variant="ghost" size="sm" className="mb-8" asChild>
-          <Link href="/#projects">
+          <SectionLink href="/#projects">
             <ArrowLeft className="h-4 w-4" />
             Back to Projects
-          </Link>
+          </SectionLink>
         </Button>
 
         <div className="relative mb-8 aspect-video overflow-hidden rounded-2xl">
@@ -192,7 +192,7 @@ export default async function ProjectPage({
         <div className="text-center">
           <p className="mb-4 text-muted-foreground">Interested in similar work?</p>
           <Button variant="gradient" size="lg" asChild>
-            <Link href="/#contact">Get in Touch</Link>
+            <SectionLink href="/#contact">Get in Touch</SectionLink>
           </Button>
         </div>
       </div>

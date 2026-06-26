@@ -10,7 +10,7 @@ import {
   Send,
   CheckCircle,
 } from "lucide-react";
-import { LinkedInIcon } from "@/components/icons/social-icons";
+import { LinkedInIcon, GitHubIcon } from "@/components/icons/social-icons";
 import { siteConfig, socialLinks } from "@/constants/site";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { GlassCard } from "@/components/ui/glass-card";
@@ -51,6 +51,14 @@ const contactInfo = [
     label: "LinkedIn",
     value: "linkedin.com/in/abhishekrajverma",
     href: socialLinks.find((s) => s.icon === "linkedin")?.url,
+    external: true,
+  },
+  {
+    icon: GitHubIcon,
+    label: "GitHub",
+    value: "github.com/abhishekrajverma",
+    href: socialLinks.find((s) => s.icon === "github")?.url,
+    external: true,
   },
 ];
 
@@ -121,8 +129,8 @@ export function ContactSection() {
                       {info.href ? (
                         <a
                           href={info.href}
-                          target={info.label === "LinkedIn" ? "_blank" : undefined}
-                          rel={info.label === "LinkedIn" ? "noopener noreferrer" : undefined}
+                          target={info.external ? "_blank" : undefined}
+                          rel={info.external ? "noopener noreferrer" : undefined}
                           className="font-medium hover:text-primary transition-colors"
                         >
                           {info.value}

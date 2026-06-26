@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { Quote } from "lucide-react";
 import { testimonials } from "@/data/misc";
 import { SectionHeading } from "@/components/ui/section-heading";
@@ -31,20 +30,11 @@ export function TestimonialsSection() {
                 <p className="flex-1 text-muted-foreground leading-relaxed italic">
                   &ldquo;{t.content}&rdquo;
                 </p>
-                <div className="mt-6 flex items-center gap-3 pt-4 border-t border-border">
-                  <Image
-                    src={t.avatar}
-                    alt={t.name}
-                    width={48}
-                    height={48}
-                    className="rounded-full object-cover"
-                  />
-                  <div>
-                    <p className="font-semibold text-sm">{t.name}</p>
-                    <p className="text-xs text-muted-foreground">
-                      {t.role}, {t.company}
-                    </p>
-                  </div>
+                <div className="mt-6 border-t border-border pt-4">
+                  <p className="text-sm font-semibold">{t.name}</p>
+                  <p className="text-xs text-muted-foreground">
+                    {t.role}, {t.company}
+                  </p>
                 </div>
               </GlassCard>
             </StaggerItem>

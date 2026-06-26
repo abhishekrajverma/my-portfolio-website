@@ -5,6 +5,7 @@ const defaults = {
   NEXT_PUBLIC_CONTACT_PHONE: "+91-9262648753",
   NEXT_PUBLIC_CONTACT_LOCATION: "Gurgaon & Noida, India",
   NEXT_PUBLIC_LINKEDIN_URL: "https://linkedin.com/in/abhishekrajverma",
+  NEXT_PUBLIC_GITHUB_URL: "https://github.com/abhishekrajverma",
 } as const;
 
 function getEnv(key: keyof typeof defaults): string {
@@ -19,4 +20,5 @@ export const env = {
   phone: getEnv("NEXT_PUBLIC_CONTACT_PHONE"),
   location: getEnv("NEXT_PUBLIC_CONTACT_LOCATION"),
   linkedin: getEnv("NEXT_PUBLIC_LINKEDIN_URL"),
+  github: getEnv("NEXT_PUBLIC_GITHUB_URL"),
 };

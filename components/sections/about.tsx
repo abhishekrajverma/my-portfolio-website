@@ -6,9 +6,11 @@ import {
   profile,
   experiences,
   education,
-  timeline,
+  experienceTimeline,
+  educationTimeline,
   stats,
 } from "@/data/profile";
+import type { TimelineItem } from "@/types";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { GlassCard } from "@/components/ui/glass-card";
 import {
@@ -28,6 +30,79 @@ function StatCard({ label, value, suffix }: { label: string; value: number; suff
         {suffix}
       </div>
       <div className="mt-1 text-sm text-muted-foreground">{label}</div>
+    </div>
+  );
+}
+
+function TimelineList({
+  items,
+  dotClass,
+  yearClass,
+}: {
+  items: TimelineItem[];
+  dotClass: string;
+  yearClass: string;
+}) {
+  return (
+    <div className="relative space-y-0">
+      <div className="absolute bottom-2 left-[7px] top-2 w-px bg-border" />
+      {items.map((item, index) => {
+        const startLabel = item.type === "education" ? "Joined" : "Started";
+        const endLabel =
+          item.endDate.toLowerCase() === "present"
+            ? "Present"
+            : item.type === "education"
+              ? "Completed"
+              : "Ended";
+
+        return (
+          <motion.div
+            key={item.id}
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: index * 0.1 }}
+            className="relative flex gap-4 pb-6 last:pb-0"
+          >
+            <div
+              className={`relative z-10 mt-1.5 h-3.5 w-3.5 shrink-0 rounded-full border-2 bg-background ${dotClass}`}
+            />
+            <div className="min-w-0 flex-1">
+              <span className={`text-xs font-medium ${yearClass}`}>
+                {item.period}
+              </span>
+              <h4 className="font-medium">{item.title}</h4>
+
+              {item.type !== "milestone" ? (
+                <dl className="mt-2 grid grid-cols-2 gap-3 text-sm">
+                  <div>
+                    <dt className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
+                      {startLabel}
+                    </dt>
+                    <dd className="mt-0.5 font-medium text-foreground">
+                      {item.startDate}
+                    </dd>
+                  </div>
+                  <div>
+                    <dt className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
+                      {endLabel}
+                    </dt>
+                    <dd className="mt-0.5 font-medium text-foreground">
+                      {item.endDate}
+                    </dd>
+                  </div>
+                </dl>
+              ) : null}
+
+              {item.description ? (
+                <p className="mt-2 text-sm text-muted-foreground">
+                  {item.description}
+                </p>
+              ) : null}
+            </div>
+          </motion.div>
+        );
+      })}
     </div>
   );
 }
@@ -118,6 +193,17 @@ export function AboutSection() {
                   </StaggerItem>
                 ))}
               </StaggerContainer>
+
+              <div className="mt-8">
+                <h4 className="mb-4 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+                  Experience Timeline
+                </h4>
+                <TimelineList
+                  items={experienceTimeline}
+                  dotClass="border-primary"
+                  yearClass="text-primary"
+                />
+              </div>
             </div>
           </MotionWrapper>
 
@@ -151,31 +237,14 @@ export function AboutSection() {
               </StaggerContainer>
 
               <div className="mt-8">
-                <h3 className="mb-6 text-xl font-semibold">Timeline</h3>
-                <div className="relative space-y-0">
-                  <div className="absolute left-[7px] top-2 bottom-2 w-px bg-border" />
-                  {timeline.map((item, i) => (
-                    <motion.div
-                      key={item.id}
-                      initial={{ opacity: 0, x: -20 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: i * 0.1 }}
-                      className="relative flex gap-4 pb-6"
-                    >
-                      <div className="relative z-10 mt-1.5 h-3.5 w-3.5 shrink-0 rounded-full border-2 border-primary bg-background" />
-                      <div>
-                        <span className="text-xs font-medium text-primary">
-                          {item.year}
-                        </span>
-                        <h4 className="font-medium">{item.title}</h4>
-                        <p className="text-sm text-muted-foreground">
-                          {item.description}
-                        </p>
-                      </div>
-                    </motion.div>
-                  ))}
-                </div>
+                <h4 className="mb-4 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+                  Education Timeline
+                </h4>
+                <TimelineList
+                  items={educationTimeline}
+                  dotClass="border-secondary"
+                  yearClass="text-secondary"
+                />
               </div>
             </div>
           </MotionWrapper>

@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { SectionLink } from "@/components/layout/section-link";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Menu,
@@ -14,14 +14,17 @@ import {
 } from "lucide-react";
 import { useTheme } from "@wrksz/themes/client";
 import { useScroll, useScrollProgress } from "@/hooks/use-scroll";
-import { navLinks } from "@/constants/navigation";
+import { getNavSections } from "@/constants/navigation";
 import { siteConfig } from "@/constants/site";
 import { Button } from "@/components/ui/button";
 import { CommandMenu } from "@/components/layout/command-menu";
+import { NavItem } from "@/components/layout/nav-item";
+import { NavMobileMenu } from "@/components/layout/nav-mobile-menu";
 import { cn } from "@/lib/utils";
 
 export function Navbar() {
   const pathname = usePathname();
+  const navSections = getNavSections(pathname);
   const scrolled = useScroll(20);
   const progress = useScrollProgress();
   const { resolvedTheme, setTheme } = useTheme();
@@ -74,25 +77,23 @@ export function Navbar() {
           className="absolute bottom-0 left-0 h-[2px] bg-gradient-to-r from-primary via-secondary to-accent transition-all duration-150"
           style={{ width: `${progress}%` }}
         />
-        <nav className="container-custom flex h-16 items-center justify-between px-6">
-          <Link href="/#hero" className="flex items-center gap-2 group">
+        <nav className="container-custom flex h-14 items-center justify-between gap-3 px-4 sm:h-16 sm:px-6">
+          <SectionLink href="/#hero" className="flex items-center gap-2 group">
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-secondary text-sm font-bold text-white">
               AR
             </div>
             <span className="hidden font-semibold sm:block group-hover:text-primary transition-colors">
               {siteConfig.name.split(" ")[0]}
             </span>
-          </Link>
+          </SectionLink>
 
-          <div className="hidden items-center gap-1 md:flex">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="rounded-lg px-3 py-2 text-sm text-muted-foreground transition-colors hover:text-foreground hover:bg-muted/50"
-              >
-                {link.label}
-              </Link>
+          <div className="hidden min-w-0 flex-1 items-center justify-center gap-0.5 lg:flex xl:gap-1">
+            {navSections.map((section) => (
+              <NavItem
+                key={section.id}
+                section={section}
+                mounted={mounted}
+              />
             ))}
           </div>
 
@@ -107,7 +108,7 @@ export function Navbar() {
               <Command className="h-4 w-4" />
             </Button>
 
-            {mounted && (
+            {mounted ? (
               <Button
                 variant="ghost"
                 size="icon"
@@ -121,6 +122,16 @@ export function Navbar() {
                 ) : (
                   <Moon className="h-4 w-4" />
                 )}
+              </Button>
+            ) : (
+              <Button
+                variant="ghost"
+                size="icon"
+                aria-label="Toggle theme"
+                className="pointer-events-none"
+                tabIndex={-1}
+              >
+                <Sun className="h-4 w-4 opacity-0" />
               </Button>
             )}
 
@@ -137,7 +148,7 @@ export function Navbar() {
             <Button
               variant="ghost"
               size="icon"
-              className="md:hidden"
+              className="lg:hidden"
               onClick={() => setMobileOpen(!mobileOpen)}
               aria-label="Toggle menu"
             >
@@ -155,20 +166,14 @@ export function Navbar() {
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: -12, opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-x-0 top-16 bottom-0 z-[60] overflow-y-auto border-t border-border bg-background shadow-2xl md:hidden"
+            className="fixed inset-x-0 top-14 bottom-0 z-[60] overflow-y-auto border-t border-border bg-background/98 shadow-2xl backdrop-blur-xl sm:top-16 lg:hidden"
           >
-            <div className="container-custom flex flex-col gap-1 px-6 py-4">
-                {navLinks.map((link) => (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    onClick={() => setMobileOpen(false)}
-                    className="rounded-lg px-3 py-2.5 text-sm text-foreground transition-colors hover:bg-muted/50"
-                  >
-                    {link.label}
-                  </Link>
-                ))}
-                <Button variant="gradient" className="mt-2" asChild>
+            <div className="container-custom flex flex-col gap-6 px-4 py-5 sm:px-6">
+              <NavMobileMenu
+                sections={navSections}
+                onNavigate={() => setMobileOpen(false)}
+              />
+              <Button variant="gradient" className="w-full" asChild>
                   <a
                     href={siteConfig.resumeUrl}
                     download={siteConfig.resumeDownloadName}

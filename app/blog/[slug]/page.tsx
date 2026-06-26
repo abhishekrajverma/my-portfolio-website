@@ -2,16 +2,15 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, Clock } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import {
   getAllBlogSlugs,
   getBlogPostBySlug,
   getRecommendedBlogPosts,
 } from "@/lib/blog/repository";
 import { markdownToHtml } from "@/lib/blog";
+import { BlogAuthorMeta } from "@/components/blog/blog-author-meta";
 import { RecommendedBlogs } from "@/components/blog/recommended-blogs";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { formatDate } from "@/lib/utils";
 
 export const revalidate = 300;
@@ -55,48 +54,56 @@ export default async function BlogPostPage({
 
   return (
     <article className="section-padding pt-28">
-      <div className="container-custom max-w-3xl">
-        <Button variant="ghost" size="sm" className="mb-8" asChild>
-          <Link href="/blog">
-            <ArrowLeft className="h-4 w-4" />
-            Back to Blog
-          </Link>
-        </Button>
+      <div className="blog-reading-column px-4 sm:px-6">
+        <Link
+          href="/blog"
+          className="mb-10 inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          All stories
+        </Link>
 
-        <div className="relative mb-8 aspect-video overflow-hidden rounded-2xl">
+        <header className="mb-10 space-y-6">
+          <Link
+            href={`/blog?category=${encodeURIComponent(post.category)}`}
+            className="text-sm font-medium text-primary hover:underline"
+          >
+            {post.category}
+          </Link>
+
+          <h1 className="text-4xl font-bold leading-[1.12] tracking-tight text-foreground md:text-5xl md:leading-[1.08]">
+            {post.title}
+          </h1>
+
+          <p className="text-lg leading-relaxed text-muted-foreground md:text-xl">
+            {post.excerpt}
+          </p>
+
+          <BlogAuthorMeta date={post.date} readTime={post.readTime} />
+
+          <p className="text-xs text-muted-foreground">
+            Published {formatDate(post.date)}
+          </p>
+        </header>
+
+        <div className="relative mb-12 aspect-[2/1] overflow-hidden rounded-sm bg-muted">
           <Image
             src={post.image}
             alt={post.title}
             fill
             className="object-cover"
             priority
+            sizes="(max-width: 680px) 100vw, 680px"
           />
         </div>
 
-        <Badge className="mb-4" variant="accent">
-          {post.category}
-        </Badge>
-
-        <h1 className="mb-4 text-3xl font-bold md:text-4xl lg:text-5xl">
-          {post.title}
-        </h1>
-
-        <div className="mb-8 flex items-center gap-4 text-sm text-muted-foreground">
-          <span>{formatDate(post.date)}</span>
-          <span>·</span>
-          <span className="flex items-center gap-1">
-            <Clock className="h-4 w-4" />
-            {post.readTime}
-          </span>
-        </div>
-
         <div
-          className="prose-custom"
+          className="prose-medium"
           dangerouslySetInnerHTML={{ __html: contentHtml }}
         />
       </div>
 
-      <div className="container-custom mt-4 max-w-5xl">
+      <div className="blog-reading-column mt-20 px-4 sm:px-6">
         <RecommendedBlogs
           posts={recommendedPosts}
           currentCategory={post.category}

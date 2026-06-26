@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { SectionLink } from "@/components/layout/section-link";
 import { usePathname } from "next/navigation";
 import {
   Mail,
@@ -8,20 +8,24 @@ import {
   Phone,
   ArrowUpRight,
 } from "lucide-react";
-import { LinkedInIcon } from "@/components/icons/social-icons";
+import { LinkedInIcon, GitHubIcon } from "@/components/icons/social-icons";
 import { siteConfig, socialLinks } from "@/constants/site";
-import { navLinks } from "@/constants/navigation";
+import { getNavLinks } from "@/constants/navigation";
 import { Separator } from "@/components/ui/separator";
 import { NewsletterForm } from "@/components/layout/newsletter-form";
 
 const iconMap: Record<string, React.ReactNode> = {
   linkedin: <LinkedInIcon />,
+  github: <GitHubIcon />,
   mail: <Mail className="h-5 w-5" />,
   phone: <Phone className="h-5 w-5" />,
 };
 
+const externalIcons = new Set(["linkedin", "github"]);
+
 export function Footer() {
   const pathname = usePathname();
+  const navLinks = getNavLinks(pathname);
 
   if (pathname.startsWith("/admin")) {
     return null;
@@ -52,13 +56,13 @@ export function Footer() {
             <h3 className="mb-4 font-semibold">Quick Links</h3>
             <ul className="space-y-2">
               {navLinks.map((link) => (
-                <li key={link.href}>
-                  <Link
+                <li key={link.label}>
+                  <SectionLink
                     href={link.href}
                     className="text-sm text-muted-foreground transition-colors hover:text-primary"
                   >
                     {link.label}
-                  </Link>
+                  </SectionLink>
                 </li>
               ))}
             </ul>
@@ -71,8 +75,8 @@ export function Footer() {
                 <li key={link.name}>
                   <a
                     href={link.url}
-                    target={link.icon === "linkedin" ? "_blank" : undefined}
-                    rel={link.icon === "linkedin" ? "noopener noreferrer" : undefined}
+                    target={externalIcons.has(link.icon) ? "_blank" : undefined}
+                    rel={externalIcons.has(link.icon) ? "noopener noreferrer" : undefined}
                     className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-primary"
                   >
                     {iconMap[link.icon]}

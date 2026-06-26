@@ -1,10 +1,8 @@
 "use client";
 
 import { useCallback, useMemo } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { Clock } from "lucide-react";
 import {
   isBlogCategory,
   type BlogCategoryFilter,
@@ -12,11 +10,8 @@ import {
 import { filterBlogPostsByCategory } from "@/lib/blog/helpers";
 import type { BlogPostSummary } from "@/lib/blog/helpers";
 import { BlogCategoryFilterBar } from "@/components/blog/blog-category-filter";
-import { SectionHeading } from "@/components/ui/section-heading";
-import { GlassCard } from "@/components/ui/glass-card";
-import { Badge } from "@/components/ui/badge";
+import { BlogFeedCard } from "@/components/blog/blog-feed-card";
 import { Button } from "@/components/ui/button";
-import { formatDate } from "@/lib/utils";
 
 interface BlogPostsPageProps {
   posts: BlogPostSummary[];
@@ -57,12 +52,16 @@ export function BlogPostsPage({ posts }: BlogPostsPageProps) {
 
   return (
     <div className="section-padding pt-28">
-      <div className="container-custom">
-        <SectionHeading
-          label="Blog"
-          title="All Articles"
-          description="Data analytics tutorials, career tips, and technical deep-dives."
-        />
+      <div className="blog-feed-column px-4 sm:px-0">
+        <header className="mb-8 border-b border-border pb-8 text-left">
+          <p className="mb-3 text-sm font-medium text-primary">Stories</p>
+          <h1 className="mb-3 text-4xl font-bold tracking-tight text-foreground md:text-5xl">
+            Insights & Tutorials
+          </h1>
+          <p className="max-w-2xl text-lg leading-relaxed text-muted-foreground">
+            Data analytics tutorials, career tips, and technical deep-dives.
+          </p>
+        </header>
 
         <BlogCategoryFilterBar
           activeCategory={activeCategory}
@@ -70,56 +69,23 @@ export function BlogPostsPage({ posts }: BlogPostsPageProps) {
           className="mb-4"
         />
 
-        <p className="mb-8 text-center text-sm text-muted-foreground">
-          Showing {filtered.length} of {posts.length} articles
+        <p className="mb-2 text-sm text-muted-foreground">
+          {filtered.length} {filtered.length === 1 ? "story" : "stories"}
         </p>
 
-        <div
-          key={activeCategory}
-          className="grid gap-6 md:grid-cols-2 lg:grid-cols-3"
-        >
-          {filtered.map((post) => (
-            <Link key={post.slug} href={`/blog/${post.slug}`}>
-              <GlassCard className="group h-full overflow-hidden !p-0">
-                <div className="relative aspect-video overflow-hidden">
-                  <Image
-                    src={post.image}
-                    alt={post.title}
-                    fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
-                  <Badge className="absolute top-4 left-4" variant="default">
-                    {post.category}
-                  </Badge>
-                </div>
-                <div className="p-6">
-                  <div className="mb-3 flex items-center gap-3 text-xs text-muted-foreground">
-                    <span>{formatDate(post.date)}</span>
-                    <span>·</span>
-                    <span className="flex items-center gap-1">
-                      <Clock className="h-3 w-3" />
-                      {post.readTime}
-                    </span>
-                  </div>
-                  <h2 className="mb-2 font-semibold group-hover:text-primary transition-colors line-clamp-2">
-                    {post.title}
-                  </h2>
-                  <p className="text-sm text-muted-foreground line-clamp-3">
-                    {post.excerpt}
-                  </p>
-                </div>
-              </GlassCard>
-            </Link>
+        <div key={activeCategory}>
+          {filtered.map((post, index) => (
+            <BlogFeedCard key={post.slug} post={post} featured={index === 0} />
           ))}
         </div>
 
-        {filtered.length === 0 && (
-          <p className="py-12 text-center text-muted-foreground">
+        {filtered.length === 0 ? (
+          <p className="py-16 text-left text-muted-foreground">
             No articles found in this category.
           </p>
-        )}
+        ) : null}
 
-        <div className="mt-12 text-center">
+        <div className="mt-12 border-t border-border pt-8">
           <Button variant="outline" asChild>
             <Link href="/">Back to Home</Link>
           </Button>

@@ -2,14 +2,14 @@ import type { Experience, Education, TimelineItem } from "@/types";
 
 export const profile = {
   name: "Abhishek Raj",
-  role: "Data Analyst | MIS Executive",
+  role: "Data Analyst | MIS Executive | Aspiring Data Engineer",
   tagline: "Turning Business Data into Clear, Actionable Insights",
   summary:
-    "Data-focused MIS Executive and aspiring Data Analyst with 1+ years of hands-on experience in reporting automation, dashboard development, and business performance analysis. Strong working knowledge of SQL Server, Power BI, Excel, Power Query, and Excel VBA. Delivered measurable impact by reducing manual reporting effort by 60% and improving dashboard/report performance by up to 40%.",
+    "Data-focused MIS Executive and aspiring Data Analyst with 1+ years of hands-on experience in reporting automation, dashboard development, and business performance analysis. Strong working knowledge of SQL Server, Power BI, Excel, Power Query, and Excel VBA. Delivered measurable impact by reducing manual reporting effort by 60% and improving dashboard/report performance by up to 40%. Currently expanding into data engineering, machine learning, generative AI, and modern cloud-native data technologies.",
   careerObjective:
-    "Seeking a Data Analyst or MIS Analyst role where I can apply SQL Server, Power BI, and Advanced Excel skills to build scalable reporting systems, automate workflows, and deliver decision-ready KPI insights for business teams.",
-  techStack: ["SQL Server", "Power BI", "Advanced Excel", "Python"],
-  typingRoles: ["Data Analyst", "MIS Executive"],
+    "Seeking a Data Analyst, MIS Analyst, or Data Engineer role where I can apply SQL Server, Power BI, and Python skills to build scalable reporting systems, data pipelines, and AI-ready analytics workflows that deliver decision-ready KPI insights for business teams.",
+  techStack: ["SQL Server", "Power BI", "Python", "Machine Learning"],
+  typingRoles: ["Data Analyst", "Data Engineer", "MIS Executive"],
   avatar: "/my-photo.jpeg",
   heroImage: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop",
   languages: ["English", "Hindi"],
@@ -43,36 +43,34 @@ export const education: Education[] = [
   },
 ];
 
-export const timeline: TimelineItem[] = [
-  {
-    id: "1",
-    year: "2025",
-    title: "MIS Executive at Worldfa Exports",
-    description: "Leading MIS reporting, Power BI dashboards, and SQL automation",
+const experienceRoleTimeline: TimelineItem[] = experiences.map((exp) => {
+  const [startDate, endDate] = exp.period.split("—").map((part) => part.trim());
+
+  return {
+    id: `exp-timeline-${exp.id}`,
+    period: exp.period,
+    startDate,
+    endDate,
+    title: `${exp.role} — ${exp.company}`,
     type: "experience",
-  },
-  {
-    id: "2",
-    year: "2024",
-    title: "B.Tech CSE — MM University",
-    description: "Graduated with GPA 8.23/10",
+  };
+});
+
+export const experienceTimeline: TimelineItem[] = experienceRoleTimeline;
+
+export const educationTimeline: TimelineItem[] = education.map((edu) => {
+  const [startYear, endYear] = edu.period.split("—").map((part) => part.trim());
+
+  return {
+    id: `edu-timeline-${edu.id}`,
+    period: edu.period,
+    startDate: startYear,
+    endDate: endYear,
+    title: `${edu.degree.split(",")[0]} — ${edu.institution.split(",")[0]}`,
+    description: edu.description.split("—")[0].trim(),
     type: "education",
-  },
-  {
-    id: "3",
-    year: "2024",
-    title: "Data Analyst Certification",
-    description: "Simplilearn — Data Analyst Certification",
-    type: "milestone",
-  },
-  {
-    id: "4",
-    year: "2024",
-    title: "Enterprise ERP Analytics Dashboard",
-    description: "Built module-wise Power BI dashboards for 500+ daily users",
-    type: "milestone",
-  },
-];
+  };
+});
 
 export const stats = [
   { label: "MIS Reports Built", value: 30, suffix: "+" },

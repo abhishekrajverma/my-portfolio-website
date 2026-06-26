@@ -1,6 +1,10 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import {
+  isSectionHref,
+  navigateToSection,
+} from "@/lib/hash-navigation";
 import {
   CommandDialog,
   CommandEmpty,
@@ -9,13 +13,12 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-import { commandMenuLinks } from "@/constants/navigation";
+import { getCommandMenuLinks } from "@/constants/navigation";
 import {
   Home,
   User,
   Code,
   FolderOpen,
-  BarChart3,
   Award,
   BookOpen,
   Mail,
@@ -26,7 +29,6 @@ const iconMap: Record<string, React.ReactNode> = {
   About: <User className="h-4 w-4" />,
   Skills: <Code className="h-4 w-4" />,
   Projects: <FolderOpen className="h-4 w-4" />,
-  Dashboard: <BarChart3 className="h-4 w-4" />,
   Certifications: <Award className="h-4 w-4" />,
   Blog: <BookOpen className="h-4 w-4" />,
   Contact: <Mail className="h-4 w-4" />,
@@ -41,9 +43,17 @@ interface CommandMenuProps {
 
 export function CommandMenu({ open, onOpenChange }: CommandMenuProps) {
   const router = useRouter();
+  const pathname = usePathname();
+  const commandMenuLinks = getCommandMenuLinks(pathname);
 
   const handleSelect = (href: string) => {
     onOpenChange(false);
+
+    if (isSectionHref(href)) {
+      navigateToSection(href, pathname, router);
+      return;
+    }
+
     router.push(href);
   };
 
@@ -55,7 +65,7 @@ export function CommandMenu({ open, onOpenChange }: CommandMenuProps) {
         <CommandGroup heading="Navigation">
           {commandMenuLinks.map((link) => (
             <CommandItem
-              key={link.href}
+              key={link.label}
               value={link.label}
               onSelect={() => handleSelect(link.href)}
             >

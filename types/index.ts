@@ -26,9 +26,11 @@ export interface Education {
 
 export interface TimelineItem {
   id: string;
-  year: string;
+  period: string;
+  startDate: string;
+  endDate: string;
   title: string;
-  description: string;
+  description?: string;
   type: "experience" | "education" | "milestone";
 }
 
@@ -84,7 +86,6 @@ export interface Testimonial {
   role: string;
   company: string;
   content: string;
-  avatar: string;
 }
 
 export interface FAQ {

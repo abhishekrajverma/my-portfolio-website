@@ -9,7 +9,11 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
-        hostname: "**.supabase.co",
+        hostname: "ghchart.rshah.org",
+      },
+      {
+        protocol: "https",
+        hostname: "github.githubassets.com",
       },
     ],
   },

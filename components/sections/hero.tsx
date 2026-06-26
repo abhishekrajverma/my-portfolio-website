@@ -5,6 +5,7 @@ import { siteConfig } from "@/constants/site";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { HeroRole } from "@/components/sections/hero-role";
+import { SectionAnchor } from "@/components/layout/section-anchor";
 import { HeroScrollHint } from "@/components/sections/hero-scroll-hint";
 
 const descriptionText = `${profile.tagline}. Specializing in ${profile.techStack.join(" · ")} to drive data-informed decisions.`;
@@ -52,10 +53,10 @@ export function HeroSection() {
                 </a>
               </Button>
               <Button variant="glass" size="lg" asChild>
-                <a href="/#contact">
+                <SectionAnchor href="/#contact">
                   <Mail className="h-5 w-5" />
                   Contact Me
-                </a>
+                </SectionAnchor>
               </Button>
             </div>
           </div>

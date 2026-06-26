@@ -211,7 +211,133 @@ body {
   background: var(--muted-foreground);
 }
 
-/* Blog prose */
+/* Blog — Medium-inspired reading experience */
+.blog-medium {
+  --blog-reading: min(680px, 100%);
+  --blog-feed: min(48rem, 100%);
+}
+
+.blog-reading-column {
+  max-width: var(--blog-reading);
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+}
+
+.blog-feed-column {
+  max-width: var(--blog-feed);
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+}
+
+.prose-medium {
+  font-family: var(--font-source-serif), Georgia, "Times New Roman", serif;
+  font-size: 1.25rem;
+  line-height: 1.85;
+  color: color-mix(in srgb, var(--foreground) 92%, transparent);
+  letter-spacing: -0.003em;
+}
+
+.prose-medium > *:first-child {
+  margin-top: 0;
+}
+
+.prose-medium h2 {
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  font-size: 1.625rem;
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+  margin-top: 2.75rem;
+  margin-bottom: 1rem;
+  color: var(--foreground);
+}
+
+.prose-medium h3 {
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  font-size: 1.375rem;
+  font-weight: 600;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+  color: var(--foreground);
+}
+
+.prose-medium p {
+  margin-bottom: 1.75rem;
+}
+
+.prose-medium strong {
+  color: var(--foreground);
+  font-weight: 600;
+}
+
+.prose-medium a {
+  color: var(--foreground);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: color-mix(in srgb, var(--foreground) 35%, transparent);
+  transition: text-decoration-color 0.2s ease;
+}
+
+.prose-medium a:hover {
+  text-decoration-color: var(--foreground);
+}
+
+.prose-medium blockquote {
+  border-left: 3px solid var(--border);
+  margin: 2rem 0;
+  padding-left: 1.25rem;
+  font-style: italic;
+  color: var(--muted-foreground);
+}
+
+.prose-medium pre {
+  font-family: var(--font-mono), monospace;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  background: var(--muted);
+  padding: 1.25rem;
+  border-radius: 0.25rem;
+  overflow-x: auto;
+  margin: 2rem 0;
+}
+
+.prose-medium code {
+  font-family: var(--font-mono), monospace;
+  font-size: 0.9em;
+  background: color-mix(in srgb, var(--muted) 80%, transparent);
+  padding: 0.15em 0.35em;
+  border-radius: 0.2rem;
+}
+
+.prose-medium pre code {
+  background: transparent;
+  padding: 0;
+}
+
+.prose-medium ol,
+.prose-medium ul {
+  margin: 0 0 1.75rem 1.25rem;
+  padding: 0;
+}
+
+.prose-medium li {
+  margin-bottom: 0.65rem;
+  padding-left: 0.35rem;
+}
+
+.prose-medium li::marker {
+  color: var(--muted-foreground);
+}
+
+.prose-medium hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2.5rem 0;
+}
+
+/* Legacy prose (non-blog pages) */
 .prose-custom h2 {
   font-size: 1.5rem;
   font-weight: 700;

@@ -59,9 +59,9 @@ export default function AdminLoginPage() {
           <p className="text-sm text-muted-foreground">
             Create and publish articles without editing code.
           </p>
-          <div className="mx-auto mt-3 flex max-w-xs items-start gap-2 rounded-xl border border-amber-400/20 bg-amber-400/5 px-3 py-2.5 text-left">
-            <LockKeyhole className="mt-0.5 h-4 w-4 shrink-0 text-amber-400" />
-            <p className="text-xs leading-relaxed text-amber-100/80">
+          <div className="mx-auto mt-3 flex max-w-xs items-start gap-2 rounded-xl border border-primary/20 bg-primary/5 px-3 py-2.5 text-left">
+            <LockKeyhole className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+            <p className="text-xs leading-relaxed text-foreground">
               Author&apos;s writing desk — only the admin turns drafts into
               published insights. Everyone else, head to the public blog.
             </p>
@@ -92,7 +92,9 @@ export default function AdminLoginPage() {
             />
           </div>
 
-          {error ? <p className="text-sm text-red-400">{error}</p> : null}
+          {error ? (
+            <p className="text-sm font-medium text-red-500">{error}</p>
+          ) : null}
 
           <Button type="submit" className="w-full" disabled={isLoading}>
             {isLoading ? (

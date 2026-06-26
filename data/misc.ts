@@ -8,7 +8,6 @@ export const testimonials: Testimonial[] = [
     company: "Manufacturing",
     content:
       "Abhishek's Power BI dashboards gave our leadership team a reliable single view of sales, inventory, and finance KPIs. Reporting delays dropped noticeably within the first quarter.",
-    avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face",
   },
   {
     id: "2",
@@ -17,7 +16,6 @@ export const testimonials: Testimonial[] = [
     company: "Worldfa Exports Pvt Ltd",
     content:
       "His SQL and Excel VBA automation saved hours of manual MIS work every week. The standardized KPI reports are now much easier to trust and act on.",
-    avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face",
   },
   {
     id: "3",
@@ -26,7 +24,6 @@ export const testimonials: Testimonial[] = [
     company: "Data Community",
     content:
       "Abhishek combines strong SQL Server fundamentals with practical Power BI delivery. He translates business questions into clean metrics and actionable dashboards quickly.",
-    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face",
   },
 ];
 

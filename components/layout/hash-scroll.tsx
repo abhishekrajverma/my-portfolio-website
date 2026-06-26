@@ -2,6 +2,10 @@
 
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
+import {
+  sanitizeLocationHash,
+  scrollToSection,
+} from "@/lib/hash-navigation";
 
 export function HashScrollHandler() {
   const pathname = usePathname();
@@ -9,27 +13,24 @@ export function HashScrollHandler() {
   useEffect(() => {
     if (pathname !== "/") return;
 
-    const scrollToHash = () => {
-      const hash = window.location.hash;
+    const scrollToCurrentHash = () => {
+      const hash = sanitizeLocationHash() ?? window.location.hash;
       if (!hash) return;
-
-      const element = document.querySelector(hash);
-      if (element) {
-        element.scrollIntoView({ behavior: "smooth" });
-      }
+      scrollToSection(hash, "auto");
     };
 
-    // Allow the page to render before scrolling
-    const timeout = window.setTimeout(scrollToHash, 100);
+    const timeout = window.setTimeout(scrollToCurrentHash, 100);
     return () => window.clearTimeout(timeout);
   }, [pathname]);
 
   useEffect(() => {
     const onHashChange = () => {
       if (window.location.pathname !== "/") return;
-      const hash = window.location.hash;
+
+      const hash = sanitizeLocationHash();
       if (!hash) return;
-      document.querySelector(hash)?.scrollIntoView({ behavior: "smooth" });
+
+      scrollToSection(hash);
     };
 
     window.addEventListener("hashchange", onHashChange);
