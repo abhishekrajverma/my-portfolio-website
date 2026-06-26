@@ -1,11 +1,12 @@
 "use client";
 
-import Image from "next/image";
 import { CalendarDays, Flame, TrendingUp } from "lucide-react";
-import type { GitHubYearlyCommits } from "@/lib/github/stats";
+import { GitHubContributionChart } from "@/components/sections/github-contribution-chart";
+import type { GitHubContributionCalendar, GitHubYearlyCommits } from "@/lib/github/stats";
 import { cn } from "@/lib/utils";
 
 type GitHubContributionsPanelProps = {
+  contributionCalendar: GitHubContributionCalendar | null;
   contributionChartUrl: string;
   yearlyCommits: GitHubYearlyCommits[];
   totalCommits: number;
@@ -32,6 +33,7 @@ function getContributionInsights(yearlyCommits: GitHubYearlyCommits[]) {
 }
 
 export function GitHubContributionsPanel({
+  contributionCalendar,
   contributionChartUrl,
   yearlyCommits,
   totalCommits,
@@ -43,15 +45,11 @@ export function GitHubContributionsPanel({
   const insights = getContributionInsights(yearlyCommits);
 
   return (
-    <div className="flex flex-1 flex-col">
-      <div className="mb-6 overflow-hidden rounded-xl border border-border/70 bg-muted/10 p-2">
-        <Image
-          src={contributionChartUrl}
-          alt="GitHub contribution chart"
-          width={600}
-          height={120}
-          unoptimized
-          className="h-auto w-full"
+    <div className="flex min-w-0 flex-1 flex-col">
+      <div className="mb-6 min-w-0">
+        <GitHubContributionChart
+          calendar={contributionCalendar}
+          fallbackChartUrl={contributionChartUrl}
         />
       </div>
 

@@ -21,6 +21,22 @@ export type GitHubYearlyCommits = {
   commits: number;
 };
 
+export type GitHubContributionDay = {
+  date: string;
+  count: number;
+  weekday: number;
+  color: string;
+};
+
+export type GitHubContributionWeek = {
+  days: GitHubContributionDay[];
+};
+
+export type GitHubContributionCalendar = {
+  totalContributions: number;
+  weeks: GitHubContributionWeek[];
+};
+
 export const GITHUB_DATA_REVALIDATE_SECONDS = 3600;
 export const RECENT_COMMIT_WINDOW_MS = 24 * 60 * 60 * 1000;
 
@@ -29,6 +45,7 @@ export type GitHubProfileData = {
   recentCommits: GitHubCommitActivity[];
   yearlyCommits: GitHubYearlyCommits[];
   totalCommits: number;
+  contributionCalendar: GitHubContributionCalendar | null;
   contributionChartUrl: string;
   fetchedAt: string;
   cacheRevalidateSeconds: number;
@@ -418,13 +435,93 @@ export async function fetchYearWiseCommits(username: string): Promise<GitHubYear
   return yearlyCommits.sort((a, b) => b.year - a.year);
 }
 
+export async function fetchContributionCalendar(
+  username: string
+): Promise<GitHubContributionCalendar | null> {
+  const token = process.env.GITHUB_TOKEN?.trim();
+  if (!token) return null;
+
+  try {
+    const response = await fetch("https://api.github.com/graphql", {
+      method: "POST",
+      next: { revalidate: GITHUB_DATA_REVALIDATE_SECONDS },
+      headers: {
+        ...(getGitHubHeaders() as Record<string, string>),
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        query: `
+          query($login: String!) {
+            user(login: $login) {
+              contributionsCollection {
+                contributionCalendar {
+                  totalContributions
+                  weeks {
+                    contributionDays {
+                      contributionCount
+                      color
+                      date
+                      weekday
+                    }
+                  }
+                }
+              }
+            }
+          }
+        `,
+        variables: { login: username },
+      }),
+    });
+
+    if (!response.ok) return null;
+
+    const data = (await response.json()) as {
+      data?: {
+        user?: {
+          contributionsCollection?: {
+            contributionCalendar?: {
+              totalContributions?: number;
+              weeks?: Array<{
+                contributionDays?: Array<{
+                  contributionCount?: number;
+                  color?: string;
+                  date?: string;
+                  weekday?: number;
+                }>;
+              }>;
+            };
+          };
+        };
+      };
+    };
+
+    const calendar = data.data?.user?.contributionsCollection?.contributionCalendar;
+    if (!calendar?.weeks) return null;
+
+    return {
+      totalContributions: calendar.totalContributions ?? 0,
+      weeks: calendar.weeks.map((week) => ({
+        days: (week.contributionDays ?? []).map((day) => ({
+          date: day.date ?? "",
+          count: day.contributionCount ?? 0,
+          weekday: day.weekday ?? 0,
+          color: day.color ?? "#ebedf0",
+        })),
+      })),
+    };
+  } catch {
+    return null;
+  }
+}
+
 export async function fetchGitHubProfileData(username: string): Promise<GitHubProfileData> {
   const yearlyCommits = await fetchYearWiseCommits(username);
   const totalCommits = yearlyCommits.reduce((sum, entry) => sum + entry.commits, 0);
 
-  const [stats, recentCommits] = await Promise.all([
+  const [stats, recentCommits, contributionCalendar] = await Promise.all([
     fetchGitHubUserStats(username),
     fetchRecentCommits(username),
+    fetchContributionCalendar(username),
   ]);
 
   return {
@@ -432,6 +529,7 @@ export async function fetchGitHubProfileData(username: string): Promise<GitHubPr
     recentCommits,
     yearlyCommits,
     totalCommits,
+    contributionCalendar,
     contributionChartUrl: `https://ghchart.rshah.org/${username}?color=6366f1&font=Inter`,
     fetchedAt: new Date().toISOString(),
     cacheRevalidateSeconds: GITHUB_DATA_REVALIDATE_SECONDS,

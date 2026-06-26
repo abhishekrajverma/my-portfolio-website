@@ -39,6 +39,7 @@ export function GitHubSectionClient({ githubData }: GitHubSectionClientProps) {
     recentCommits,
     yearlyCommits,
     totalCommits,
+    contributionCalendar,
     contributionChartUrl,
     fetchedAt,
     cacheRevalidateSeconds,
@@ -101,10 +102,10 @@ export function GitHubSectionClient({ githubData }: GitHubSectionClientProps) {
           </GlassCard>
         </MotionWrapper>
 
-        <div className="mb-6 grid gap-6 lg:grid-cols-2 lg:items-stretch">
-          <MotionWrapper delay={0.15} className="h-full">
-            <GlassCard className="flex h-full flex-col">
-              <div className="mb-4 flex flex-wrap items-start justify-between gap-3">
+        <div className="mb-6 grid min-w-0 gap-6 lg:grid-cols-2 lg:items-stretch">
+          <MotionWrapper delay={0.15} className="h-full min-w-0">
+            <GlassCard hover={false} className="flex h-full min-w-0 flex-col overflow-hidden">
+              <div className="mb-4 flex min-w-0 flex-wrap items-start justify-between gap-3">
                 <div className="flex items-center gap-2">
                   <Sparkles className="h-4 w-4 text-accent" />
                   <h3 className="font-semibold">Contributions</h3>
@@ -112,10 +113,12 @@ export function GitHubSectionClient({ githubData }: GitHubSectionClientProps) {
                 <GitHubLiveBadge
                   fetchedAt={fetchedAt}
                   cacheRevalidateSeconds={cacheRevalidateSeconds}
+                  className="shrink-0"
                 />
               </div>
 
               <GitHubContributionsPanel
+                contributionCalendar={contributionCalendar}
                 contributionChartUrl={contributionChartUrl}
                 yearlyCommits={yearlyCommits}
                 totalCommits={totalCommits}
@@ -123,9 +126,9 @@ export function GitHubSectionClient({ githubData }: GitHubSectionClientProps) {
             </GlassCard>
           </MotionWrapper>
 
-          <MotionWrapper delay={0.18} className="h-full">
-            <GlassCard className="flex h-full flex-col">
-              <div className="mb-4 flex flex-wrap items-start justify-between gap-3">
+          <MotionWrapper delay={0.18} className="h-full min-w-0">
+            <GlassCard hover={false} className="flex h-full min-w-0 flex-col overflow-hidden">
+              <div className="mb-4 flex min-w-0 flex-wrap items-start justify-between gap-3">
                 <div className="flex flex-wrap items-center gap-2">
                   <GitCommitHorizontal className="h-4 w-4 text-primary" />
                   <h3 className="font-semibold">Recent Commits (24h)</h3>
