@@ -90,35 +90,24 @@ export function AdminToastProvider({
           role="status"
           aria-live="polite"
           className={cn(
-            "fixed bottom-6 right-6 z-[100] flex max-w-sm items-start gap-3 rounded-xl border px-4 py-3 shadow-lg backdrop-blur transition-all duration-300",
-            isSuccess
-              ? "border-emerald-400/30 bg-emerald-500/10"
-              : "border-red-400/30 bg-red-500/10",
+            "fixed bottom-4 left-4 right-4 z-[100] flex items-start gap-3 rounded-xl border-2 px-4 py-3.5 shadow-2xl transition-all duration-300 sm:bottom-6 sm:left-auto sm:right-6 sm:max-w-sm",
+            "bg-popover text-popover-foreground",
+            isSuccess ? "border-emerald-600" : "border-red-600",
             visible ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0"
           )}
         >
           {isSuccess ? (
-            <CheckCircle className="mt-0.5 h-5 w-5 shrink-0 text-emerald-400" />
+            <CheckCircle className="mt-0.5 h-5 w-5 shrink-0 text-emerald-600" />
           ) : (
-            <AlertCircle className="mt-0.5 h-5 w-5 shrink-0 text-red-400" />
+            <AlertCircle className="mt-0.5 h-5 w-5 shrink-0 text-red-600" />
           )}
-          <p
-            className={cn(
-              "text-sm",
-              isSuccess ? "text-emerald-50" : "text-red-50"
-            )}
-          >
+          <p className="min-w-0 flex-1 text-sm font-medium text-foreground">
             {toast.message}
           </p>
           <button
             type="button"
             onClick={dismissToast}
-            className={cn(
-              "ml-auto transition-colors",
-              isSuccess
-                ? "text-emerald-200/80 hover:text-emerald-50"
-                : "text-red-200/80 hover:text-red-50"
-            )}
+            className="shrink-0 text-muted-foreground transition-colors hover:text-foreground"
             aria-label="Dismiss notification"
           >
             <X className="h-4 w-4" />

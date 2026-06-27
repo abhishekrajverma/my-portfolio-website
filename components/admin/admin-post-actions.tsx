@@ -47,11 +47,11 @@ export function AdminPostActions({ slug, title }: AdminPostActionsProps) {
 
   return (
     <>
-      <div className="grid w-full shrink-0 grid-cols-3 items-center gap-2 sm:w-[300px]">
+      <div className="grid w-full shrink-0 grid-cols-1 gap-2 min-[420px]:grid-cols-3 sm:w-[300px]">
         <Button
           variant="outline"
           size="sm"
-          className="w-full justify-self-start sm:min-w-[80px]"
+          className="w-full min-[420px]:min-w-[80px]"
           asChild
         >
           <Link href={`/blog/${slug}`} target="_blank">
@@ -63,7 +63,7 @@ export function AdminPostActions({ slug, title }: AdminPostActionsProps) {
           type="button"
           variant="outline"
           size="sm"
-          className="w-full justify-self-center border-red-400/40 text-red-400 hover:bg-red-400/10 sm:min-w-[80px]"
+          className="w-full min-[420px]:min-w-[80px] border-red-400/40 text-red-400 hover:bg-red-400/10"
           onClick={() => setDeleteDialogOpen(true)}
           disabled={isDeleting}
         >
@@ -75,7 +75,7 @@ export function AdminPostActions({ slug, title }: AdminPostActionsProps) {
           Delete
         </Button>
 
-        <Button size="sm" className="w-full justify-self-end sm:min-w-[80px]" asChild>
+        <Button size="sm" className="w-full min-[420px]:min-w-[80px]" asChild>
           <Link href={`/admin/blog/${slug}/edit`}>
             <Pencil className="h-4 w-4" />
             Edit

@@ -20,6 +20,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { GlassCard } from "@/components/ui/glass-card";
+import { ProseContent } from "@/components/blog/prose-content";
 
 interface BlogEditorProps {
   mode: "create" | "edit";
@@ -358,10 +359,7 @@ export function BlogEditor({ mode, initialPost }: BlogEditorProps) {
             <TabsContent value="preview" className="mt-4">
               <div className="min-h-[420px] rounded-xl border border-border bg-muted/20 p-6">
                 {previewHtml ? (
-                  <div
-                    className="prose-custom"
-                    dangerouslySetInnerHTML={{ __html: previewHtml }}
-                  />
+                  <ProseContent className="prose-custom" html={previewHtml} />
                 ) : (
                   <p className="text-sm text-muted-foreground">
                     Start writing to see a live preview.
@@ -374,12 +372,12 @@ export function BlogEditor({ mode, initialPost }: BlogEditorProps) {
 
         {error ? <p className="text-sm text-red-400">{error}</p> : null}
 
-        <div className="flex flex-wrap items-center justify-between gap-3">
+        <div className="flex flex-col-reverse gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
           {mode === "edit" ? (
             <Button
               type="button"
               variant="outline"
-              className="border-red-400/40 text-red-400 hover:bg-red-400/10"
+              className="w-full border-red-400/40 text-red-400 hover:bg-red-400/10 sm:w-auto"
               onClick={() => setDeleteDialogOpen(true)}
               disabled={isDeleting || isSaving}
             >
@@ -394,7 +392,11 @@ export function BlogEditor({ mode, initialPost }: BlogEditorProps) {
             <div />
           )}
 
-          <Button type="submit" disabled={isSaving || isUploading}>
+          <Button
+            type="submit"
+            className="w-full sm:ml-auto sm:w-auto"
+            disabled={isSaving || isUploading}
+          >
             {isSaving ? (
               <>
                 <Loader2 className="h-4 w-4 animate-spin" />

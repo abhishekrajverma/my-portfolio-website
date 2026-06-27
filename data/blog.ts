@@ -1,6 +1,7 @@
 import type { BlogPost } from "@/types";
+import { seoBlogArticles } from "./blog-seo-articles";
 
-export const blogPosts: BlogPost[] = [
+const coreBlogPosts: BlogPost[] = [
   {
     slug: "mis-kpi-dashboard-best-practices",
     title: "5 MIS KPI Dashboard Best Practices for Business Teams",
@@ -200,4 +201,9 @@ Use the STAR method: Situation, Task, Action, Result.`,
 6. **Mobile responsive** — 40% of users check on mobile
 7. **Tell a story** — Guide the eye through the narrative`,
   },
+];
+
+export const blogPosts: BlogPost[] = [
+  ...seoBlogArticles,
+  ...coreBlogPosts,
 ];

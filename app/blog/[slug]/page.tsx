@@ -10,6 +10,7 @@ import {
 } from "@/lib/blog/repository";
 import { markdownToHtml } from "@/lib/blog";
 import { BlogAuthorMeta } from "@/components/blog/blog-author-meta";
+import { ProseContent } from "@/components/blog/prose-content";
 import { RecommendedBlogs } from "@/components/blog/recommended-blogs";
 import { getProfileAvatarUrl } from "@/lib/profile/avatar";
 import { formatDate } from "@/lib/utils";
@@ -127,10 +128,7 @@ export default async function BlogPostPage({
           />
         </div>
 
-        <div
-          className="prose-medium"
-          dangerouslySetInnerHTML={{ __html: contentHtml }}
-        />
+        <ProseContent className="prose-medium" html={contentHtml} />
       </div>
 
       <div className="blog-reading-column mt-20 px-4 sm:px-6">
