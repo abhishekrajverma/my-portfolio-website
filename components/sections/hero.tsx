@@ -66,9 +66,9 @@ export async function HeroSection() {
               <ProfileAvatarImage
                 src={avatarUrl}
                 alt={profile.name}
-                width={500}
-                height={500}
-                sizes="(max-width: 1024px) 80vw, 500px"
+                width={480}
+                height={480}
+                sizes="(max-width: 1024px) 80vw, 480px"
                 className="aspect-square h-full w-full"
                 priority
               />

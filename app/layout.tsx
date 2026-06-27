@@ -1,14 +1,11 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { preload } from "react-dom";
-import { SpeedInsights } from "@vercel/speed-insights/next";
 import { ThemeProvider } from "@wrksz/themes/next";
 import { AppSplash } from "@/components/layout/app-splash";
 import { LazyAnimatedBackground } from "@/components/layout/lazy-animated-background";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
-import { BackToTop } from "@/components/layout/back-to-top";
-import { HashScrollHandler } from "@/components/layout/hash-scroll";
+import { DeferredUi } from "@/components/layout/deferred-ui";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { siteConfig } from "@/constants/site";
 import { getProfileAvatarUrl } from "@/lib/profile/avatar";
@@ -26,6 +23,7 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
   display: "swap",
+  preload: false,
 });
 
 const baseMetadata: Metadata = {
@@ -99,7 +97,6 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const avatarUrl = await getProfileAvatarUrl();
-  preload(avatarUrl, { as: "image", fetchPriority: "high" });
 
   return (
     <html
@@ -120,10 +117,8 @@ export default async function RootLayout({
             <Navbar avatarUrl={avatarUrl} />
             <main className="flex-1">{children}</main>
             <Footer avatarUrl={avatarUrl} />
-            <BackToTop />
-            <HashScrollHandler />
+            <DeferredUi />
           </TooltipProvider>
-          <SpeedInsights />
         </ThemeProvider>
       </body>
     </html>

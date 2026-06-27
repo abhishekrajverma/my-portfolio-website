@@ -2,52 +2,65 @@
 
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import { AnimatePresence, motion } from "framer-motion";
-import { LoadingScreen } from "@/components/layout/loading-screen";
+import dynamic from "next/dynamic";
 
-const MIN_SPLASH_MS = 1400;
+const LoadingScreen = dynamic(
+  () =>
+    import("@/components/layout/loading-screen").then((m) => m.LoadingScreen),
+  { ssr: false }
+);
+
+const SPLASH_SESSION_KEY = "portfolio-splash-seen";
+const MIN_SPLASH_MS = 0;
+
+function shouldSkipSplash(): boolean {
+  try {
+    if (sessionStorage.getItem(SPLASH_SESSION_KEY) === "1") {
+      return true;
+    }
+  } catch {
+    // Ignore storage errors in private mode.
+  }
+
+  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
 
 export function AppSplash({ avatarUrl }: { avatarUrl: string }) {
   const pathname = usePathname();
-  const [visible, setVisible] = useState(true);
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    if (pathname.startsWith("/admin")) {
+    if (pathname.startsWith("/admin") || shouldSkipSplash()) {
       setVisible(false);
       return;
     }
 
     const startedAt = Date.now();
+    setVisible(true);
 
     const finish = () => {
-      const elapsed = Date.now() - startedAt;
-      const remaining = Math.max(0, MIN_SPLASH_MS - elapsed);
+      const remaining = Math.max(0, MIN_SPLASH_MS - (Date.now() - startedAt));
 
-      window.setTimeout(() => setVisible(false), remaining);
+      window.setTimeout(() => {
+        setVisible(false);
+        try {
+          sessionStorage.setItem(SPLASH_SESSION_KEY, "1");
+        } catch {
+          // Ignore storage errors.
+        }
+      }, remaining);
     };
 
-    if (document.readyState === "complete") {
+    if (document.readyState !== "loading") {
       finish();
       return;
     }
 
-    window.addEventListener("load", finish, { once: true });
-    return () => window.removeEventListener("load", finish);
+    document.addEventListener("DOMContentLoaded", finish, { once: true });
+    return () => document.removeEventListener("DOMContentLoaded", finish);
   }, [pathname]);
 
-  return (
-    <AnimatePresence>
-      {visible ? (
-        <motion.div
-          key="app-splash"
-          className="fixed inset-0 z-[200]"
-          initial={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.4, ease: "easeOut" }}
-        >
-          <LoadingScreen avatarUrl={avatarUrl} />
-        </motion.div>
-      ) : null}
-    </AnimatePresence>
-  );
+  if (!visible) return null;
+
+  return <LoadingScreen avatarUrl={avatarUrl} />;
 }

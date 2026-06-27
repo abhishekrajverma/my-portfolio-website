@@ -32,7 +32,6 @@ export function BrandAvatar({
         alt={alt}
         fill
         sizes={size === "sm" ? "32px" : "40px"}
-        priority={size === "sm"}
       />
     </div>
   );

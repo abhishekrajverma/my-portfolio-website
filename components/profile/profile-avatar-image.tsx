@@ -22,8 +22,6 @@ export function ProfileAvatarImage({
   width,
   height,
 }: ProfileAvatarImageProps) {
-  const isRemote = src.startsWith("http");
-
   if (fill) {
     return (
       <Image
@@ -33,7 +31,7 @@ export function ProfileAvatarImage({
         className={cn("object-cover", className)}
         sizes={sizes}
         priority={priority}
-        unoptimized={isRemote}
+        quality={80}
       />
     );
   }
@@ -47,7 +45,7 @@ export function ProfileAvatarImage({
       className={cn("object-cover", className)}
       sizes={sizes}
       priority={priority}
-      unoptimized={isRemote}
+      quality={80}
     />
   );
 }

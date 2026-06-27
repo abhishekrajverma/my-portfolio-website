@@ -1,6 +1,5 @@
 import dynamic from "next/dynamic";
 import { HeroSection } from "@/components/sections/hero";
-import { GitHubSection } from "@/components/sections/github";
 import { JsonLd } from "@/components/seo/json-ld";
 import { faqs } from "@/data/misc";
 import { siteConfig } from "@/constants/site";
@@ -13,6 +12,10 @@ export const metadata = pageMetadata({
   path: "/",
   absoluteTitle: true,
 });
+
+const GitHubSection = dynamic(() =>
+  import("@/components/sections/github").then((m) => m.GitHubSection)
+);
 
 const AboutSection = dynamic(() =>
   import("@/components/sections/about").then((m) => m.AboutSection)

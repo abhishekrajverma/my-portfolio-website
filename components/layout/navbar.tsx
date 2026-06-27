@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
+import dynamic from "next/dynamic";
 import { SectionLink } from "@/components/layout/section-link";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -17,11 +18,16 @@ import { useScroll, useScrollProgress } from "@/hooks/use-scroll";
 import { getNavSections } from "@/constants/navigation";
 import { siteConfig } from "@/constants/site";
 import { Button } from "@/components/ui/button";
-import { CommandMenu } from "@/components/layout/command-menu";
 import { BrandAvatar } from "@/components/layout/brand-avatar";
 import { NavItem } from "@/components/layout/nav-item";
 import { NavMobileMenu } from "@/components/layout/nav-mobile-menu";
 import { cn } from "@/lib/utils";
+
+const CommandMenu = dynamic(
+  () =>
+    import("@/components/layout/command-menu").then((m) => m.CommandMenu),
+  { ssr: false }
+);
 
 export function Navbar({ avatarUrl }: { avatarUrl: string }) {
   const pathname = usePathname();
@@ -186,7 +192,9 @@ export function Navbar({ avatarUrl }: { avatarUrl: string }) {
         )}
       </AnimatePresence>
 
-      <CommandMenu open={commandOpen} onOpenChange={setCommandOpen} />
+      {commandOpen ? (
+        <CommandMenu open={commandOpen} onOpenChange={setCommandOpen} />
+      ) : null}
     </>
   );
 }
