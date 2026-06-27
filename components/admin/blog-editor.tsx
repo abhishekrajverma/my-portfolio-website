@@ -264,7 +264,7 @@ export function BlogEditor({ mode, initialPost }: BlogEditorProps) {
                 onChange={(event) =>
                   setCategory(event.target.value as BlogPost["category"])
                 }
-                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               >
                 {BLOG_POST_CATEGORIES.map((item) => (
                   <option key={item} value={item}>
@@ -359,7 +359,7 @@ export function BlogEditor({ mode, initialPost }: BlogEditorProps) {
             <TabsContent value="preview" className="mt-4">
               <div className="min-h-[420px] rounded-xl border border-border bg-muted/20 p-6">
                 {previewHtml ? (
-                  <ProseContent className="prose-custom" html={previewHtml} />
+                  <ProseContent className="prose-medium" html={previewHtml} />
                 ) : (
                   <p className="text-sm text-muted-foreground">
                     Start writing to see a live preview.
@@ -370,7 +370,7 @@ export function BlogEditor({ mode, initialPost }: BlogEditorProps) {
           </Tabs>
         </GlassCard>
 
-        {error ? <p className="text-sm text-red-400">{error}</p> : null}
+        {error ? <p className="text-sm text-destructive" role="alert">{error}</p> : null}
 
         <div className="flex flex-col-reverse gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
           {mode === "edit" ? (

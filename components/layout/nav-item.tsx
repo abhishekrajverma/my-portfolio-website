@@ -1,60 +1,46 @@
 "use client";
 
 import { SectionLink } from "@/components/layout/section-link";
-import { NavSectionMenu } from "@/components/layout/nav-section-menu";
-import {
-  desktopNavItemClass,
-} from "@/components/layout/nav-styles";
+import { desktopNavItemClass } from "@/components/layout/nav-styles";
 import {
   Award,
   BookOpen,
+  CircleHelp,
   Code,
   FolderOpen,
-  Home,
+  GitBranch,
   Mail,
+  MessageSquareQuote,
   User,
   type LucideIcon,
 } from "lucide-react";
 import type { NavSection } from "@/constants/navigation";
-import { cn } from "@/lib/utils";
 
 const sectionIcons: Record<string, LucideIcon> = {
-  home: Home,
   about: User,
+  skills: Code,
   projects: FolderOpen,
   certifications: Award,
-  skills: Code,
-  contact: Mail,
+  github: GitBranch,
   blog: BookOpen,
+  testimonials: MessageSquareQuote,
+  faq: CircleHelp,
+  contact: Mail,
 };
 
 interface NavItemProps {
   section: NavSection;
-  mounted: boolean;
 }
 
-export function NavItem({ section, mounted }: NavItemProps) {
+export function NavItem({ section }: NavItemProps) {
   const Icon = sectionIcons[section.id];
 
-  if (section.href) {
-    return (
-      <SectionLink href={section.href} className={desktopNavItemClass}>
-        {Icon ? (
-          <Icon className="hidden h-4 w-4 xl:inline" />
-        ) : null}
-        <span className="whitespace-nowrap">{section.title}</span>
-      </SectionLink>
-    );
-  }
+  if (!section.href) return null;
 
-  if (!mounted) {
-    return (
-      <span className={cn(desktopNavItemClass, "cursor-default")} aria-hidden>
-        {Icon ? <Icon className="hidden h-4 w-4 xl:inline" /> : null}
-        <span className="whitespace-nowrap">{section.title}</span>
-      </span>
-    );
-  }
-
-  return <NavSectionMenu section={section} />;
+  return (
+    <SectionLink href={section.href} className={desktopNavItemClass}>
+      {Icon ? <Icon className="hidden h-4 w-4 xl:inline" /> : null}
+      <span className="whitespace-nowrap">{section.title}</span>
+    </SectionLink>
+  );
 }

@@ -12,7 +12,7 @@ import {
 
 export function TestimonialsSection() {
   return (
-    <section className="section-padding bg-muted/10">
+    <section id="testimonials" className="section-padding bg-muted/10">
       <div className="container-custom">
         <MotionWrapper>
           <SectionHeading

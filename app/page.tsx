@@ -1,6 +1,11 @@
 import dynamic from "next/dynamic";
+import { Suspense } from "react";
 import { HeroSection } from "@/components/sections/hero";
+import { GitHubSection } from "@/components/sections/github";
 import { JsonLd } from "@/components/seo/json-ld";
+import { BlogSectionLoader } from "@/components/sections/blog-section-loader";
+import { GitHubSectionSkeleton } from "@/components/skeletons/github-section-skeleton";
+import { BlogSectionSkeleton } from "@/components/skeletons/blog-section-skeleton";
 import { faqs } from "@/data/misc";
 import { siteConfig } from "@/constants/site";
 import { homePageJsonLd } from "@/lib/seo/json-ld";
@@ -12,10 +17,6 @@ export const metadata = pageMetadata({
   path: "/",
   absoluteTitle: true,
 });
-
-const GitHubSection = dynamic(() =>
-  import("@/components/sections/github").then((m) => m.GitHubSection)
-);
 
 const AboutSection = dynamic(() =>
   import("@/components/sections/about").then((m) => m.AboutSection)
@@ -39,7 +40,7 @@ const ContactSection = dynamic(() =>
   import("@/components/sections/contact").then((m) => m.ContactSection)
 );
 
-export default async function HomePage() {
+export default function HomePage() {
   return (
     <>
       <JsonLd data={homePageJsonLd(faqs)} />
@@ -48,7 +49,12 @@ export default async function HomePage() {
       <SkillsSection />
       <ProjectsSection />
       <CertificationsSection />
-      <GitHubSection />
+      <Suspense fallback={<GitHubSectionSkeleton />}>
+        <GitHubSection />
+      </Suspense>
+      <Suspense fallback={<BlogSectionSkeleton />}>
+        <BlogSectionLoader />
+      </Suspense>
       <TestimonialsSection />
       <FAQSection />
       <ContactSection />

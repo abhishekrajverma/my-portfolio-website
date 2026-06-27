@@ -11,12 +11,6 @@ export type NavSection = {
   links?: NavLink[];
 };
 
-const BLOG_ONLY_LINK_LABELS = new Set(["Articles"]);
-
-export function isBlogRoute(pathname: string): boolean {
-  return pathname.startsWith("/blog");
-}
-
 export function getSectionLinks(section: NavSection): NavLink[] {
   if (section.href) {
     return [{ href: section.href, label: section.title }];
@@ -25,18 +19,19 @@ export function getSectionLinks(section: NavSection): NavLink[] {
   return section.links ?? [];
 }
 
+/** Order matches homepage scroll order in `app/page.tsx`. */
 export const navSections: NavSection[] = [
-  {
-    id: "home",
-    title: "Home",
-    description: "Back to the top",
-    href: "/#hero",
-  },
   {
     id: "about",
     title: "About",
     description: "Background & experience",
     href: "/#about",
+  },
+  {
+    id: "skills",
+    title: "Skills",
+    description: "Tools & technologies",
+    href: "/#skills",
   },
   {
     id: "projects",
@@ -51,10 +46,28 @@ export const navSections: NavSection[] = [
     href: "/#certifications",
   },
   {
-    id: "skills",
-    title: "Skills",
-    description: "Tools & technologies",
-    href: "/#skills",
+    id: "github",
+    title: "GitHub",
+    description: "Stats & contributions",
+    href: "/#github",
+  },
+  {
+    id: "blog",
+    title: "Blog",
+    description: "Articles & tutorials",
+    href: "/blog",
+  },
+  {
+    id: "testimonials",
+    title: "Testimonials",
+    description: "Peer feedback",
+    href: "/#testimonials",
+  },
+  {
+    id: "faq",
+    title: "FAQ",
+    description: "Common questions",
+    href: "/#faq",
   },
   {
     id: "contact",
@@ -62,31 +75,30 @@ export const navSections: NavSection[] = [
     description: "Reach out anytime",
     href: "/#contact",
   },
-  {
-    id: "blog",
-    title: "Blog",
-    description: "Articles & writing studio",
-    links: [
-      { href: "/blog", label: "Articles" },
-      { href: "/blog", label: "All Stories" },
-      { href: "/admin/blog", label: "Blog Studio" },
-    ],
-  },
 ];
 
+/** Shown directly in the desktop/laptop nav bar. */
+export const PRIMARY_NAV_IDS = [
+  "about",
+  "skills",
+  "projects",
+  "blog",
+  "contact",
+] as const;
+
 export function getNavSections(pathname: string): NavSection[] {
-  const showArticles = isBlogRoute(pathname);
+  void pathname;
+  return navSections;
+}
 
-  return navSections.map((section) => {
-    if (section.id !== "blog" || !section.links) return section;
+export function getPrimaryNavSections(pathname: string): NavSection[] {
+  const primary = new Set<string>(PRIMARY_NAV_IDS);
+  return getNavSections(pathname).filter((section) => primary.has(section.id));
+}
 
-    return {
-      ...section,
-      links: section.links.filter(
-        (link) => showArticles || !BLOG_ONLY_LINK_LABELS.has(link.label)
-      ),
-    };
-  });
+export function getSecondaryNavSections(pathname: string): NavSection[] {
+  const primary = new Set<string>(PRIMARY_NAV_IDS);
+  return getNavSections(pathname).filter((section) => !primary.has(section.id));
 }
 
 export const navLinks: NavLink[] = navSections.flatMap(getSectionLinks);
@@ -94,11 +106,6 @@ export const navLinks: NavLink[] = navSections.flatMap(getSectionLinks);
 export function getNavLinks(pathname: string): NavLink[] {
   return getNavSections(pathname).flatMap(getSectionLinks);
 }
-
-export const commandMenuLinks = [
-  ...navLinks,
-  { href: "/projects", label: "All Projects" },
-];
 
 export function getCommandMenuLinks(pathname: string): NavLink[] {
   return [

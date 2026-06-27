@@ -155,6 +155,18 @@ export function ContactSection() {
 
           <MotionWrapper delay={0.2} className="lg:col-span-3">
             <GlassCard>
+              <div
+                role="status"
+                aria-live="polite"
+                aria-atomic="true"
+                className="sr-only"
+              >
+                {submitted
+                  ? "Message sent successfully."
+                  : submitError
+                    ? submitError
+                    : ""}
+              </div>
               <AnimatePresence mode="wait">
                 {submitted ? (
                   <motion.div
@@ -187,7 +199,9 @@ export function ContactSection() {
                           {...register("name", { required: "Name is required" })}
                         />
                         {errors.name && (
-                          <p className="text-xs text-red-400">{errors.name.message}</p>
+                          <p className="text-xs text-destructive" role="alert">
+                            {errors.name.message}
+                          </p>
                         )}
                       </div>
                       <div className="space-y-2">
@@ -205,7 +219,9 @@ export function ContactSection() {
                           })}
                         />
                         {errors.email && (
-                          <p className="text-xs text-red-400">{errors.email.message}</p>
+                          <p className="text-xs text-destructive" role="alert">
+                            {errors.email.message}
+                          </p>
                         )}
                       </div>
                     </div>
@@ -217,7 +233,9 @@ export function ContactSection() {
                         {...register("subject", { required: "Subject is required" })}
                       />
                       {errors.subject && (
-                        <p className="text-xs text-red-400">{errors.subject.message}</p>
+                        <p className="text-xs text-destructive" role="alert">
+                          {errors.subject.message}
+                        </p>
                       )}
                     </div>
                     <div className="space-y-2">
@@ -229,11 +247,15 @@ export function ContactSection() {
                         {...register("message", { required: "Message is required" })}
                       />
                       {errors.message && (
-                        <p className="text-xs text-red-400">{errors.message.message}</p>
+                        <p className="text-xs text-destructive" role="alert">
+                          {errors.message.message}
+                        </p>
                       )}
                     </div>
                     {submitError ? (
-                      <p className="text-sm text-red-400">{submitError}</p>
+                      <p className="text-sm text-destructive" role="alert">
+                        {submitError}
+                      </p>
                     ) : null}
                     <Button
                       type="submit"

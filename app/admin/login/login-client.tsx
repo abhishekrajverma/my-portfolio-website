@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Loader2, LockKeyhole } from "lucide-react";
+import { ArrowLeft, Loader2 } from "lucide-react";
 import { createSupabaseBrowserClient } from "@/lib/supabase/browser";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -53,20 +53,9 @@ export default function AdminLoginPage() {
   return (
     <div className="flex min-h-screen items-center justify-center px-4 py-16">
       <GlassCard className="w-full max-w-md space-y-6">
-        <div className="space-y-2 text-center">
-          <p className="text-sm font-medium text-primary">Blog Studio</p>
-          <h1 className="text-2xl font-bold">Sign in to manage posts</h1>
-          <p className="text-sm text-muted-foreground">
-            Create and publish articles without editing code.
-          </p>
-          <div className="mx-auto mt-3 flex max-w-xs items-start gap-2 rounded-xl border border-primary/20 bg-primary/5 px-3 py-2.5 text-left">
-            <LockKeyhole className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
-            <p className="text-xs leading-relaxed text-foreground">
-              Author&apos;s writing desk — only the admin turns drafts into
-              published insights. Everyone else, head to the public blog.
-            </p>
-          </div>
-        </div>
+        <h1 className="text-center text-xl font-semibold tracking-tight">
+          Admin login
+        </h1>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
@@ -74,6 +63,7 @@ export default function AdminLoginPage() {
             <Input
               id="email"
               type="email"
+              autoComplete="email"
               value={email}
               onChange={(event) => setEmail(event.target.value)}
               placeholder="you@email.com"
@@ -86,6 +76,7 @@ export default function AdminLoginPage() {
             <Input
               id="password"
               type="password"
+              autoComplete="current-password"
               value={password}
               onChange={(event) => setPassword(event.target.value)}
               required
@@ -93,7 +84,9 @@ export default function AdminLoginPage() {
           </div>
 
           {error ? (
-            <p className="text-sm font-medium text-red-500">{error}</p>
+            <p className="text-sm font-medium text-destructive" role="alert">
+              {error}
+            </p>
           ) : null}
 
           <Button type="submit" className="w-full" disabled={isLoading}>
@@ -108,11 +101,15 @@ export default function AdminLoginPage() {
           </Button>
         </form>
 
-        <p className="text-center text-sm text-muted-foreground">
-          <Link href="/" className="hover:text-primary">
+        <div className="flex justify-center border-t border-border/60 pt-5">
+          <Link
+            href="/"
+            className="group inline-flex items-center gap-2 rounded-full border border-border/60 bg-muted/20 px-4 py-2 text-sm font-medium text-muted-foreground transition-all hover:border-primary/30 hover:bg-primary/5 hover:text-foreground"
+          >
+            <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-0.5" />
             Back to website
           </Link>
-        </p>
+        </div>
       </GlassCard>
     </div>
   );

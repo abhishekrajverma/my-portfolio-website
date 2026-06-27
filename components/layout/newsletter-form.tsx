@@ -54,7 +54,11 @@ export function NewsletterForm() {
 
   return (
     <div className="space-y-3">
-      <form className="flex gap-2" onSubmit={handleSubmit}>
+      <form
+        className="flex flex-col gap-2 sm:flex-row"
+        onSubmit={handleSubmit}
+        aria-label="Newsletter subscription"
+      >
         <Input
           type="email"
           placeholder="your@email.com"
@@ -80,17 +84,19 @@ export function NewsletterForm() {
           )}
         </Button>
       </form>
-      {message && (
+      {message ? (
         <p
+          role="status"
+          aria-live="polite"
           className={
             status === "error"
-              ? "text-sm text-red-400"
-              : "text-sm text-emerald-400"
+              ? "text-sm text-destructive"
+              : "text-sm text-emerald-600 dark:text-emerald-400"
           }
         >
           {message}
         </p>
-      )}
+      ) : null}
     </div>
   );
 }

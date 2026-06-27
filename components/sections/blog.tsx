@@ -8,6 +8,7 @@ import type { BlogPostSummary } from "@/lib/blog/helpers";
 import { BlogCategoryFilterBar } from "@/components/blog/blog-category-filter";
 import { BlogFeedCard } from "@/components/blog/blog-feed-card";
 import { Button } from "@/components/ui/button";
+import { SectionHeading } from "@/components/ui/section-heading";
 import {
   MotionWrapper,
   StaggerContainer,
@@ -37,16 +38,11 @@ export function BlogSection({ posts, avatarUrl }: BlogSectionProps) {
       <div className="container-custom">
         <div className="blog-feed-column">
           <MotionWrapper>
-            <header className="mb-8 border-b border-border pb-8 text-left">
-              <p className="mb-3 text-sm font-medium text-primary">Stories</p>
-              <h2 className="mb-3 text-3xl font-bold tracking-tight md:text-4xl">
-                Insights & Tutorials
-              </h2>
-              <p className="max-w-2xl text-muted-foreground">
-                Practical guides on SQL, Power BI, Python, and data analytics career
-                development.
-              </p>
-            </header>
+            <SectionHeading
+              label="Stories"
+              title="Insights & Tutorials"
+              description="Practical guides on SQL, Power BI, Python, and data analytics career development."
+            />
           </MotionWrapper>
 
           <MotionWrapper delay={0.1}>

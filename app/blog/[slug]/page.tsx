@@ -13,7 +13,6 @@ import { BlogAuthorMeta } from "@/components/blog/blog-author-meta";
 import { ProseContent } from "@/components/blog/prose-content";
 import { RecommendedBlogs } from "@/components/blog/recommended-blogs";
 import { getProfileAvatarUrl } from "@/lib/profile/avatar";
-import { formatDate } from "@/lib/utils";
 import { JsonLd } from "@/components/seo/json-ld";
 import {
   blogPostingJsonLd,
@@ -111,10 +110,6 @@ export default async function BlogPostPage({
             date={post.date}
             readTime={post.readTime}
           />
-
-          <p className="text-xs text-muted-foreground">
-            Published {formatDate(post.date)}
-          </p>
         </header>
 
         <div className="relative mb-12 aspect-[2/1] overflow-hidden rounded-sm bg-muted">

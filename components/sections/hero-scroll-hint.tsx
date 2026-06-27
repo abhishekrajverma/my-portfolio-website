@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { ArrowDown } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { navigateToSection } from "@/lib/hash-navigation";
@@ -8,6 +8,7 @@ import { navigateToSection } from "@/lib/hash-navigation";
 export function HeroScrollHint() {
   const pathname = usePathname();
   const router = useRouter();
+  const reduceMotion = useReducedMotion();
 
   return (
     <motion.div
@@ -19,9 +20,10 @@ export function HeroScrollHint() {
       <motion.button
         type="button"
         onClick={() => navigateToSection("/#about", pathname, router)}
-        animate={{ y: [0, 8, 0] }}
-        transition={{ duration: 2, repeat: Infinity }}
-        className="flex flex-col items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
+        animate={reduceMotion ? undefined : { y: [0, 8, 0] }}
+        transition={reduceMotion ? undefined : { duration: 2, repeat: Infinity }}
+        className="flex flex-col items-center gap-2 text-muted-foreground transition-colors hover:text-primary"
+        aria-label="Scroll to About section"
       >
         <span className="text-xs">Scroll to explore</span>
         <ArrowDown className="h-4 w-4" />

@@ -78,17 +78,19 @@ export function UnsubscribeForm() {
           </Button>
         </form>
 
-        {message && (
+        {message ? (
           <p
+            role="status"
+            aria-live="polite"
             className={
               status === "error"
-                ? "mt-4 text-sm text-red-400"
-                : "mt-4 text-sm text-emerald-400"
+                ? "mt-4 text-sm text-destructive"
+                : "mt-4 text-sm text-emerald-600 dark:text-emerald-400"
             }
           >
             {message}
           </p>
-        )}
+        ) : null}
       </GlassCard>
     </div>
   );

@@ -210,7 +210,7 @@ export function ProjectsSection() {
                     "rounded-full px-3.5 py-1.5 text-xs font-medium transition-all duration-300",
                     activeTag === tag
                       ? "bg-primary text-primary-foreground shadow-md shadow-primary/25"
-                      : "border border-border/80 bg-card/50 text-muted-foreground hover:border-primary/30 hover:text-foreground"
+                      : "glass text-muted-foreground hover:text-foreground"
                   )}
                 >
                   {tag}

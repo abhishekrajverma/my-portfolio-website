@@ -25,7 +25,7 @@ export function BackToTop() {
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.8 }}
-          className="fixed bottom-8 right-8 z-50"
+          className="fixed bottom-6 right-4 z-50 sm:bottom-8 sm:right-8"
         >
           <Button
             variant="glass"

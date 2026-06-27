@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import dynamic from "next/dynamic";
+import Link from "next/link";
 import { SectionLink } from "@/components/layout/section-link";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -12,14 +13,16 @@ import {
   Moon,
   Command,
   Download,
+  LockKeyhole,
 } from "lucide-react";
 import { useTheme } from "@wrksz/themes/client";
 import { useScroll, useScrollProgress } from "@/hooks/use-scroll";
-import { getNavSections } from "@/constants/navigation";
+import { getNavSections, getPrimaryNavSections, getSecondaryNavSections } from "@/constants/navigation";
 import { siteConfig } from "@/constants/site";
 import { Button } from "@/components/ui/button";
 import { BrandAvatar } from "@/components/layout/brand-avatar";
 import { NavItem } from "@/components/layout/nav-item";
+import { NavMoreMenu } from "@/components/layout/nav-more-menu";
 import { NavMobileMenu } from "@/components/layout/nav-mobile-menu";
 import { cn } from "@/lib/utils";
 
@@ -32,6 +35,8 @@ const CommandMenu = dynamic(
 export function Navbar({ avatarUrl }: { avatarUrl: string }) {
   const pathname = usePathname();
   const navSections = getNavSections(pathname);
+  const primaryNavSections = getPrimaryNavSections(pathname);
+  const secondaryNavSections = getSecondaryNavSections(pathname);
   const scrolled = useScroll(20);
   const progress = useScrollProgress();
   const { resolvedTheme, setTheme } = useTheme();
@@ -87,27 +92,24 @@ export function Navbar({ avatarUrl }: { avatarUrl: string }) {
         <nav className="container-custom flex h-14 items-center justify-between gap-3 px-4 sm:h-16 sm:px-6">
           <SectionLink href="/#hero" className="flex items-center gap-2 group">
             <BrandAvatar avatarUrl={avatarUrl} alt={siteConfig.name} size="sm" />
-            <span className="hidden font-semibold sm:block group-hover:text-primary transition-colors">
+            <span className="hidden font-semibold xl:block group-hover:text-primary transition-colors">
               {siteConfig.name.split(" ")[0]}
             </span>
           </SectionLink>
 
           <div className="hidden min-w-0 flex-1 items-center justify-center gap-0.5 lg:flex xl:gap-1">
-            {navSections.map((section) => (
-              <NavItem
-                key={section.id}
-                section={section}
-                mounted={mounted}
-              />
+            {primaryNavSections.map((section) => (
+              <NavItem key={section.id} section={section} />
             ))}
+            <NavMoreMenu sections={secondaryNavSections} />
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex shrink-0 items-center gap-1 sm:gap-2">
             <Button
               variant="ghost"
               size="icon"
               onClick={() => setCommandOpen(true)}
-              className="hidden sm:flex"
+              className="hidden sm:inline-flex"
               aria-label="Open command menu"
             >
               <Command className="h-4 w-4" />
@@ -140,13 +142,31 @@ export function Navbar({ avatarUrl }: { avatarUrl: string }) {
               </Button>
             )}
 
-            <Button variant="gradient" size="sm" className="hidden sm:flex" asChild>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="hidden gap-1.5 lg:inline-flex"
+              asChild
+            >
+              <Link href="/admin/login">
+                <LockKeyhole className="h-4 w-4" />
+                <span className="hidden xl:inline">Login</span>
+              </Link>
+            </Button>
+
+            <Button
+              variant="gradient"
+              size="sm"
+              className="hidden lg:inline-flex"
+              asChild
+            >
               <a
                 href={siteConfig.resumeUrl}
                 download={siteConfig.resumeDownloadName}
+                aria-label="Download resume"
               >
                 <Download className="h-4 w-4" />
-                Resume
+                <span className="hidden 2xl:inline">Resume</span>
               </a>
             </Button>
 
@@ -178,6 +198,16 @@ export function Navbar({ avatarUrl }: { avatarUrl: string }) {
                 sections={navSections}
                 onNavigate={() => setMobileOpen(false)}
               />
+              <Link
+                href="/admin/login"
+                onClick={() => setMobileOpen(false)}
+                className="flex items-center gap-3 rounded-xl border border-border px-3 py-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted/60 hover:text-foreground"
+              >
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-muted/70">
+                  <LockKeyhole className="h-4 w-4 text-primary" />
+                </span>
+                Admin Login
+              </Link>
               <Button variant="gradient" className="w-full" asChild>
                   <a
                     href={siteConfig.resumeUrl}

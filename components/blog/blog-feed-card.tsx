@@ -17,7 +17,7 @@ export function BlogFeedCard({ post, avatarUrl, featured = false }: BlogFeedCard
     <article className="group border-b border-border py-8 first:pt-0 last:border-b-0">
       <Link
         href={`/blog/${post.slug}`}
-        className="grid grid-cols-[minmax(0,1fr)_5.5rem] items-start gap-4 sm:grid-cols-[minmax(0,1fr)_7rem] sm:gap-8 md:grid-cols-[minmax(0,1fr)_8rem]"
+        className="grid grid-cols-[minmax(0,1fr)_6.5rem] items-start gap-4 sm:grid-cols-[minmax(0,1fr)_7rem] sm:gap-8 md:grid-cols-[minmax(0,1fr)_8rem]"
       >
         <div className="min-w-0 space-y-3">
           <div className="flex items-center gap-2.5">

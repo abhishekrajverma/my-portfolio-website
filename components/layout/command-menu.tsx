@@ -5,6 +5,7 @@ import {
   isSectionHref,
   navigateToSection,
 } from "@/lib/hash-navigation";
+import { DialogTitle } from "@/components/ui/dialog";
 import {
   CommandDialog,
   CommandEmpty,
@@ -22,6 +23,9 @@ import {
   Award,
   BookOpen,
   Mail,
+  GitBranch,
+  MessageSquareQuote,
+  CircleHelp,
 } from "lucide-react";
 
 const iconMap: Record<string, React.ReactNode> = {
@@ -30,10 +34,12 @@ const iconMap: Record<string, React.ReactNode> = {
   Skills: <Code className="h-4 w-4" />,
   Projects: <FolderOpen className="h-4 w-4" />,
   Certifications: <Award className="h-4 w-4" />,
+  GitHub: <GitBranch className="h-4 w-4" />,
   Blog: <BookOpen className="h-4 w-4" />,
+  Testimonials: <MessageSquareQuote className="h-4 w-4" />,
+  FAQ: <CircleHelp className="h-4 w-4" />,
   Contact: <Mail className="h-4 w-4" />,
   "All Projects": <FolderOpen className="h-4 w-4" />,
-  "All Articles": <BookOpen className="h-4 w-4" />,
 };
 
 interface CommandMenuProps {
@@ -59,6 +65,7 @@ export function CommandMenu({ open, onOpenChange }: CommandMenuProps) {
 
   return (
     <CommandDialog open={open} onOpenChange={onOpenChange}>
+      <DialogTitle className="sr-only">Site navigation</DialogTitle>
       <CommandInput placeholder="Search pages and sections..." />
       <CommandList>
         <CommandEmpty>No results found.</CommandEmpty>
