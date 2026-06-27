@@ -12,6 +12,8 @@ import { HashScrollHandler } from "@/components/layout/hash-scroll";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { siteConfig } from "@/constants/site";
 import { getProfileAvatarUrl } from "@/lib/profile/avatar";
+import { env } from "@/lib/env";
+import { absoluteUrl } from "@/lib/seo/metadata";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -47,39 +49,46 @@ const baseMetadata: Metadata = {
       "max-snippet": -1,
     },
   },
+  alternates: {
+    canonical: siteConfig.url,
+  },
+  ...(env.googleSiteVerification
+    ? { verification: { google: env.googleSiteVerification } }
+    : {}),
 };
 
 export async function generateMetadata(): Promise<Metadata> {
-  const avatarUrl = await getProfileAvatarUrl();
-
   return {
     ...baseMetadata,
     icons: {
-      icon: [{ url: avatarUrl, type: "image/jpeg" }],
-      apple: [{ url: avatarUrl, type: "image/jpeg" }],
-      shortcut: avatarUrl,
+      icon: [
+        { url: "/favicon.ico", sizes: "any" },
+        { url: "/icon", type: "image/jpeg" },
+      ],
+      apple: [{ url: "/apple-icon", type: "image/jpeg" }],
+      shortcut: "/favicon.ico",
     },
     openGraph: {
       type: "website",
-      locale: "en_US",
+      locale: "en_IN",
       url: siteConfig.url,
       title: siteConfig.title,
       description: siteConfig.description,
       siteName: siteConfig.name,
       images: [
         {
-          url: avatarUrl,
-          width: 500,
-          height: 500,
-          alt: siteConfig.name,
+          url: absoluteUrl(siteConfig.ogImage),
+          width: 1200,
+          height: 630,
+          alt: siteConfig.title,
         },
       ],
     },
     twitter: {
-      card: "summary",
+      card: "summary_large_image",
       title: siteConfig.title,
       description: siteConfig.description,
-      images: [avatarUrl],
+      images: [absoluteUrl(siteConfig.ogImage)],
     },
   };
 }

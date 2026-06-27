@@ -1,5 +1,13 @@
 import { Suspense } from "react";
 import { UnsubscribeForm } from "@/components/layout/unsubscribe-form";
+import { pageMetadata } from "@/lib/seo/metadata";
+
+export const metadata = pageMetadata({
+  title: "Unsubscribe",
+  description: "Manage your newsletter subscription preferences.",
+  path: "/unsubscribe",
+  noIndex: true,
+});
 
 export default function UnsubscribePage() {
   return (

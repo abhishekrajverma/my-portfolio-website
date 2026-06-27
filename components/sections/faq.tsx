@@ -13,7 +13,7 @@ export function FAQSection() {
   const [openId, setOpenId] = useState<string | null>(null);
 
   return (
-    <section className="section-padding">
+    <section id="faq" className="section-padding">
       <div className="container-custom max-w-3xl">
         <MotionWrapper>
           <SectionHeading

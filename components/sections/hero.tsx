@@ -5,6 +5,7 @@ import { getProfileAvatarUrl } from "@/lib/profile/avatar";
 import { ProfileAvatarImage } from "@/components/profile/profile-avatar-image";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { TechStack } from "@/components/sections/tech-stack";
 import { HeroRole } from "@/components/sections/hero-role";
 import { SectionAnchor } from "@/components/layout/section-anchor";
 import { HeroScrollHint } from "@/components/sections/hero-scroll-hint";
@@ -31,19 +32,15 @@ export async function HeroSection() {
               <span className="mt-1 block gradient-text">{profile.name}</span>
             </h1>
 
+            <p className="sr-only">{profile.role}</p>
+
             <HeroRole roles={profile.typingRoles} />
 
             <p className="max-w-lg leading-relaxed text-muted-foreground">
               {descriptionText}
             </p>
 
-            <div className="flex flex-wrap gap-2">
-              {profile.techStack.map((tech) => (
-                <Badge key={tech} variant="accent">
-                  {tech}
-                </Badge>
-              ))}
-            </div>
+            <TechStack />
 
             <div className="flex flex-wrap gap-4 pt-2">
               <Button variant="gradient" size="lg" asChild>

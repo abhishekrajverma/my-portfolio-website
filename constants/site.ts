@@ -2,11 +2,11 @@ import { env } from "@/lib/env";
 
 export const siteConfig = {
   name: env.siteName,
-  title: `${env.siteName} | Data Analyst Portfolio`,
+  title: `${env.siteName} | Data Analyst & MIS Executive | SQL Server & Power BI`,
   description:
-    "Data Analyst and MIS Executive specializing in SQL Server, Power BI, Advanced Excel, and business reporting. Delivering automated dashboards and actionable KPI insights.",
+    "Abhishek Raj is a Data Analyst and MIS Executive in Gurgaon & Noida, India. Expert in SQL Server, Power BI, Python, and GenAI — building automated dashboards, MIS reports, and KPI analytics for business teams.",
   url: env.siteUrl,
-  ogImage: "/og-image.png",
+  ogImage: "/opengraph-image",
   author: env.siteName,
   role: "Data Analyst | MIS Executive | Aspiring Data Engineer",
   email: env.email,
@@ -17,16 +17,26 @@ export const siteConfig = {
   linkedin: env.linkedin,
   github: env.github,
   keywords: [
+    "Abhishek Raj",
     "Data Analyst",
-    "Data Engineer",
+    "Data Analyst India",
+    "Data Analyst Gurgaon",
+    "Data Analyst Noida",
     "MIS Executive",
+    "Data Engineer",
     "SQL Server",
     "Power BI",
+    "Python",
+    "GenAI",
     "Advanced Excel",
     "Power Query",
     "Excel VBA",
     "Dashboard Development",
     "MIS Reporting",
+    "Business Intelligence",
+    "KPI Dashboard",
+    "Data Analytics Portfolio",
+    "Hire Data Analyst",
   ],
 };
 

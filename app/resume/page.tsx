@@ -2,11 +2,13 @@ import { resumeData } from "@/data/resume";
 import { siteConfig } from "@/constants/site";
 import { ResumeActions } from "@/components/resume/resume-actions";
 import { Separator } from "@/components/ui/separator";
+import { pageMetadata } from "@/lib/seo/metadata";
 
-export const metadata = {
-  title: "Resume",
-  description: `Resume of ${siteConfig.name} — Data Analyst & MIS Executive`,
-};
+export const metadata = pageMetadata({
+  title: `Resume | ${siteConfig.name} — Data Analyst & MIS Executive`,
+  description: `Download the resume of ${siteConfig.name}, Data Analyst and MIS Executive skilled in SQL Server, Power BI, Python, and GenAI.`,
+  path: "/resume",
+});
 
 export default function ResumePage() {
   return (

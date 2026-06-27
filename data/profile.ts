@@ -8,7 +8,7 @@ export const profile = {
     "Data-focused MIS Executive and aspiring Data Analyst with 1+ years of hands-on experience in reporting automation, dashboard development, and business performance analysis. Strong working knowledge of SQL Server, Power BI, Excel, Power Query, and Excel VBA. Delivered measurable impact by reducing manual reporting effort by 60% and improving dashboard/report performance by up to 40%. Currently expanding into data engineering, machine learning, generative AI, and modern cloud-native data technologies.",
   careerObjective:
     "Seeking a Data Analyst, MIS Analyst, or Data Engineer role where I can apply SQL Server, Power BI, and Python skills to build scalable reporting systems, data pipelines, and AI-ready analytics workflows that deliver decision-ready KPI insights for business teams.",
-  techStack: ["SQL Server", "Power BI", "Python", "Machine Learning"],
+  techStack: ["SQL Server", "Power BI", "Python", "GenAI"],
   typingRoles: ["Data Analyst", "Data Engineer", "MIS Executive"],
   avatar: "/my-photo.jpeg", // fallback when Supabase profile storage is unavailable
   heroImage: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop",

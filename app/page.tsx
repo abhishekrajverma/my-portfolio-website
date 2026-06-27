@@ -1,6 +1,18 @@
 import dynamic from "next/dynamic";
 import { HeroSection } from "@/components/sections/hero";
 import { GitHubSection } from "@/components/sections/github";
+import { JsonLd } from "@/components/seo/json-ld";
+import { faqs } from "@/data/misc";
+import { siteConfig } from "@/constants/site";
+import { homePageJsonLd } from "@/lib/seo/json-ld";
+import { pageMetadata } from "@/lib/seo/metadata";
+
+export const metadata = pageMetadata({
+  title: siteConfig.title,
+  description: siteConfig.description,
+  path: "/",
+  absoluteTitle: true,
+});
 
 const AboutSection = dynamic(() =>
   import("@/components/sections/about").then((m) => m.AboutSection)
@@ -27,6 +39,7 @@ const ContactSection = dynamic(() =>
 export default async function HomePage() {
   return (
     <>
+      <JsonLd data={homePageJsonLd(faqs)} />
       <HeroSection />
       <AboutSection />
       <SkillsSection />

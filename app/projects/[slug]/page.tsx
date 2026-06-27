@@ -9,6 +9,12 @@ import { GlassCard } from "@/components/ui/glass-card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { JsonLd } from "@/components/seo/json-ld";
+import {
+  breadcrumbJsonLd,
+  creativeWorkJsonLd,
+} from "@/lib/seo/json-ld";
+import { pageMetadata } from "@/lib/seo/metadata";
 
 export async function generateStaticParams() {
   return projects.map((p) => ({ slug: p.slug }));
@@ -23,15 +29,12 @@ export async function generateMetadata({
   const project = getProjectBySlug(slug);
   if (!project) return { title: "Project Not Found" };
 
-  return {
+  return pageMetadata({
     title: project.title,
     description: project.description,
-    openGraph: {
-      title: project.title,
-      description: project.description,
-      images: [{ url: project.image }],
-    },
-  };
+    path: `/projects/${slug}`,
+    image: project.image,
+  });
 }
 
 export default async function ProjectPage({
@@ -44,7 +47,24 @@ export default async function ProjectPage({
   if (!project) notFound();
 
   return (
-    <article className="section-padding pt-28">
+    <>
+      <JsonLd
+        data={[
+          creativeWorkJsonLd({
+            title: project.title,
+            description: project.description,
+            slug,
+            image: project.image,
+            technologies: project.technologies,
+          }),
+          breadcrumbJsonLd([
+            { name: "Home", path: "/" },
+            { name: "Projects", path: "/projects" },
+            { name: project.title, path: `/projects/${slug}` },
+          ]),
+        ]}
+      />
+      <article className="section-padding pt-28">
       <div className="container-custom max-w-4xl">
         <Button variant="ghost" size="sm" className="mb-8" asChild>
           <SectionLink href="/#projects">
@@ -197,6 +217,7 @@ export default async function ProjectPage({
         </div>
       </div>
     </article>
+    </>
   );
 }
 

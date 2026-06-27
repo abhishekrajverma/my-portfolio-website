@@ -13,6 +13,12 @@ import { BlogAuthorMeta } from "@/components/blog/blog-author-meta";
 import { RecommendedBlogs } from "@/components/blog/recommended-blogs";
 import { getProfileAvatarUrl } from "@/lib/profile/avatar";
 import { formatDate } from "@/lib/utils";
+import { JsonLd } from "@/components/seo/json-ld";
+import {
+  blogPostingJsonLd,
+  breadcrumbJsonLd,
+} from "@/lib/seo/json-ld";
+import { pageMetadata } from "@/lib/seo/metadata";
 
 export const revalidate = 300;
 
@@ -30,15 +36,13 @@ export async function generateMetadata({
   const post = await getBlogPostBySlug(slug);
   if (!post) return { title: "Article Not Found" };
 
-  return {
+  return pageMetadata({
     title: post.title,
     description: post.excerpt,
-    openGraph: {
-      title: post.title,
-      description: post.excerpt,
-      images: [{ url: post.image }],
-    },
-  };
+    path: `/blog/${slug}`,
+    image: post.image,
+    type: "article",
+  });
 }
 
 export default async function BlogPostPage({
@@ -57,7 +61,25 @@ export default async function BlogPostPage({
   ]);
 
   return (
-    <article className="section-padding pt-28">
+    <>
+      <JsonLd
+        data={[
+          blogPostingJsonLd({
+            title: post.title,
+            description: post.excerpt,
+            slug,
+            date: post.date,
+            image: post.image,
+            category: post.category,
+          }),
+          breadcrumbJsonLd([
+            { name: "Home", path: "/" },
+            { name: "Blog", path: "/blog" },
+            { name: post.title, path: `/blog/${slug}` },
+          ]),
+        ]}
+      />
+      <article className="section-padding pt-28">
       <div className="blog-reading-column px-4 sm:px-6">
         <Link
           href="/blog"
@@ -119,5 +141,6 @@ export default async function BlogPostPage({
         />
       </div>
     </article>
+    </>
   );
 }

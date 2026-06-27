@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { Clock } from "lucide-react";
@@ -7,11 +6,14 @@ import { SectionHeading } from "@/components/ui/section-heading";
 import { GlassCard } from "@/components/ui/glass-card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { pageMetadata } from "@/lib/seo/metadata";
 
-export const metadata: Metadata = {
-  title: "All Projects",
-  description: "Portfolio of data analytics projects including SQL, Power BI, and Python solutions.",
-};
+export const metadata = pageMetadata({
+  title: "Data Analytics Projects | SQL, Power BI & Python",
+  description:
+    "Portfolio of data analytics projects by Abhishek Raj — ERP dashboards, Zomato market analysis, MIS automation with SQL Server, Power BI, and Python.",
+  path: "/projects",
+});
 
 export default function ProjectsPage() {
   return (

@@ -1,9 +1,7 @@
 import type { MetadataRoute } from "next";
 import { siteConfig } from "@/constants/site";
-import { getProfileAvatarUrl } from "@/lib/profile/avatar";
 
-export default async function manifest(): Promise<MetadataRoute.Manifest> {
-  const avatarUrl = await getProfileAvatarUrl();
+export default function manifest(): MetadataRoute.Manifest {
   const shortName = siteConfig.name.split(" ")[0];
 
   return {
@@ -16,13 +14,13 @@ export default async function manifest(): Promise<MetadataRoute.Manifest> {
     theme_color: "#3b82f6",
     icons: [
       {
-        src: avatarUrl,
+        src: "/icon",
         sizes: "192x192",
         type: "image/jpeg",
         purpose: "any",
       },
       {
-        src: avatarUrl,
+        src: "/icon",
         sizes: "512x512",
         type: "image/jpeg",
         purpose: "maskable",
