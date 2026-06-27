@@ -76,7 +76,11 @@ function SkillCard({ skill }: { skill: (typeof skills)[0] }) {
               <span className="text-muted-foreground">Proficiency</span>
               <span className="font-medium text-primary">{skill.level}%</span>
             </div>
-            <Progress value={hovered ? skill.level : 0} className="h-1.5" />
+            <Progress
+              value={hovered ? skill.level : 0}
+              className="h-1.5"
+              aria-label={`${skill.name} proficiency`}
+            />
           </div>
         </div>
       </GlassCard>

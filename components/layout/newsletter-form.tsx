@@ -64,7 +64,12 @@ export function NewsletterForm() {
           required
           disabled={status === "loading"}
         />
-        <Button type="submit" variant="default" disabled={status === "loading"}>
+        <Button
+          type="submit"
+          variant="default"
+          disabled={status === "loading"}
+          aria-label={status === "loading" ? "Subscribing to newsletter" : "Subscribe to newsletter"}
+        >
           {status === "loading" ? (
             <>
               <Loader2 className="h-4 w-4 animate-spin" />
