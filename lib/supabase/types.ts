@@ -14,24 +14,33 @@ export interface Database {
           id: string;
           name: string;
           email: string;
+          phone: string | null;
           subject: string;
           message: string;
+          jd_url: string | null;
+          jd_file_name: string | null;
           created_at: string;
         };
         Insert: {
           id?: string;
           name: string;
           email: string;
+          phone?: string | null;
           subject: string;
           message: string;
+          jd_url?: string | null;
+          jd_file_name?: string | null;
           created_at?: string;
         };
         Update: {
           id?: string;
           name?: string;
           email?: string;
+          phone?: string | null;
           subject?: string;
           message?: string;
+          jd_url?: string | null;
+          jd_file_name?: string | null;
           created_at?: string;
         };
         Relationships: [];

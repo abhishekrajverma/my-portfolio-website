@@ -39,9 +39,9 @@ export function BlogSection({ posts, avatarUrl }: BlogSectionProps) {
         <div className="blog-feed-column">
           <MotionWrapper>
             <SectionHeading
-              label="Stories"
-              title="Insights & Tutorials"
-              description="Practical guides on SQL, Power BI, Python, and data analytics career development."
+              label="Tech Blog"
+              title="Build Logs & Sharp Takes"
+              description="Tutorials, tool breakdowns, and honest lessons from across tech — dev, systems, workflows, and whatever I'm exploring next."
             />
           </MotionWrapper>
 

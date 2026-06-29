@@ -38,7 +38,7 @@ export function getDefaultContactContent(): ContactContent {
     socialLinks: getDefaultSocialLinks(),
     availabilityTitle: "Open to Opportunities",
     availabilityText:
-      "Actively exploring Data Analyst and MIS Analyst roles in Gurgaon, Noida, and remote-friendly teams across India.",
+      "Currently open to full-time Data Analyst, MIS Analyst, and related technology roles across Gurgaon, Noida, and remote-friendly organizations. Recruiters may submit an inquiry through the form or contact me directly by email.",
   };
 }
 

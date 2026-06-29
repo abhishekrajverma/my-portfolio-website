@@ -90,7 +90,7 @@ export function Footer({ avatarUrl }: { avatarUrl: string }) {
           <div>
             <h3 className="mb-4 font-semibold">Newsletter</h3>
             <p className="mb-4 text-sm text-muted-foreground">
-              Get an email when a new data analytics article is published.
+              Get an email when a new tech article is published.
             </p>
             <NewsletterForm />
           </div>

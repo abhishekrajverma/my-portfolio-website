@@ -55,12 +55,13 @@ export function BlogPostsPage({ posts, avatarUrl }: BlogPostsPageProps) {
     <div className="section-padding pt-28">
       <div className="blog-feed-column px-4 sm:px-0">
         <header className="mb-8 border-b border-border pb-8 text-left">
-          <p className="mb-3 text-sm font-medium text-primary">Stories</p>
+          <p className="mb-3 text-sm font-medium text-primary">Tech Blog</p>
           <h1 className="mb-3 text-4xl font-bold tracking-tight text-foreground md:text-5xl">
-            Insights & Tutorials
+            Build Logs & Sharp Takes
           </h1>
           <p className="max-w-2xl text-lg leading-relaxed text-muted-foreground">
-            Data analytics tutorials, career tips, and technical deep-dives.
+            Tutorials, tool breakdowns, and honest lessons from across tech — dev,
+            systems, workflows, and whatever I&apos;m exploring next.
           </p>
         </header>
 

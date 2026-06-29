@@ -87,6 +87,7 @@ type SendMailParams = {
   from?: string;
   replyTo?: string;
   headers?: Record<string, string>;
+  attachments?: Array<{ filename: string; content: Buffer }>;
 };
 
 async function sendViaResend({
@@ -97,6 +98,7 @@ async function sendViaResend({
   from,
   replyTo,
   headers,
+  attachments,
 }: SendMailParams) {
   const resend = getResendClient();
   const recipients = Array.isArray(to) ? to : [to];
@@ -109,6 +111,10 @@ async function sendViaResend({
     text,
     replyTo,
     headers,
+    attachments: attachments?.map((attachment) => ({
+      filename: attachment.filename,
+      content: attachment.content,
+    })),
   });
 
   if (error) {
@@ -126,6 +132,7 @@ async function sendViaSmtp({
   from,
   replyTo,
   headers,
+  attachments,
 }: SendMailParams) {
   const smtpTransporter = getMailTransporter();
 
@@ -137,6 +144,10 @@ async function sendViaSmtp({
     html,
     text,
     headers,
+    attachments: attachments?.map((attachment) => ({
+      filename: attachment.filename,
+      content: attachment.content,
+    })),
   });
 }
 

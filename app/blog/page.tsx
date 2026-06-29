@@ -6,9 +6,9 @@ import { getProfileAvatarUrl } from "@/lib/profile/avatar";
 import { pageMetadata } from "@/lib/seo/metadata";
 
 export const metadata = pageMetadata({
-  title: "Data Analytics Blog | SQL, Power BI & Python Tutorials",
+  title: "Tech Blog | Tutorials, Tools & Build Notes",
   description:
-    "Practical data analytics articles on SQL Server, Power BI, MIS reporting, Python, and dashboard design by Abhishek Raj.",
+    "Articles on development, dev tools, software engineering, and hands-on tech — written for builders who learn by doing.",
   path: "/blog",
 });
 
