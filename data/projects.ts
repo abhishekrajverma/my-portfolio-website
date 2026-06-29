@@ -25,10 +25,26 @@ export const projects: Project[] = [
     problemStatement:
       "Multiple departments relied on disconnected spreadsheets and ad-hoc SQL pulls, leading to inconsistent KPI calculations and slow reporting cycles.",
     dataCleaning: [
-      "Standardized product category and plant codes across ERP modules",
-      "Resolved duplicate transaction records in inventory movement tables",
-      "Validated finance variance fields against source ledger entries",
-      "Created conformed date and organization dimensions for cross-module analysis",
+      {
+        description:
+          "Standardized product category and plant codes across ERP modules",
+        tool: "SQL",
+      },
+      {
+        description:
+          "Resolved duplicate transaction records in inventory movement tables",
+        tool: "SQL",
+      },
+      {
+        description:
+          "Validated finance variance fields against source ledger entries",
+        tool: "Excel",
+      },
+      {
+        description:
+          "Created conformed date and organization dimensions for cross-module analysis",
+        tool: "Power Query",
+      },
     ],
     sqlQueries: [
       {
@@ -57,8 +73,23 @@ GROUP BY TeamName;`,
       "Exploratory analysis on sales trend outliers by plant and category",
       "Validated KPI distribution patterns before dashboard rollout",
     ],
-    powerBIDashboard:
-      "Interactive dashboards with drill-down by plant, team, time period, and product category. KPI cards for fill rate, order cycle time, inventory turnover, and target variance with executive and operational views.",
+    powerBIDashboard: {
+      summary:
+        "Interactive dashboards with drill-down by plant, team, time period, and product category. KPI cards for fill rate, order cycle time, inventory turnover, and target variance with executive and operational views.",
+      charts: ["KPI Card", "Bar Chart", "Column Chart", "Line Chart", "Slicer"],
+      steps: [
+        {
+          title: "Build the data model",
+          description:
+            "Connected ERP tables and defined relationships across inventory, sales, finance, and HR modules.",
+        },
+        {
+          title: "Create KPI cards and drill-down pages",
+          description:
+            "Added executive KPI cards with plant, team, and category slicers for operational views.",
+        },
+      ],
+    },
     businessInsights: [
       "Module-wise visibility reduced decision turnaround time for operations reviews",
       "Shared KPI logic eliminated conflicting numbers across department reports",
@@ -99,10 +130,25 @@ GROUP BY TeamName;`,
     problemStatement:
       "The dataset contained missing values, duplicate records, and inconsistent cuisine/location tags that blocked reliable market comparisons.",
     dataCleaning: [
-      "Handled missing ratings and price values using business rules",
-      "Removed duplicate restaurant records after fuzzy name matching",
-      "Standardized cuisine tags and city naming conventions",
-      "Created cleaned staging tables before loading analysis-ready views",
+      {
+        description: "Handled missing ratings and price values using business rules",
+        tool: "Python",
+        toolDetail: "pandas, numpy",
+      },
+      {
+        description: "Removed duplicate restaurant records after fuzzy name matching",
+        tool: "Python",
+        toolDetail: "fuzzywuzzy, pandas",
+      },
+      {
+        description: "Standardized cuisine tags and city naming conventions",
+        tool: "Power Query",
+      },
+      {
+        description:
+          "Created cleaned staging tables before loading analysis-ready views",
+        tool: "SQL",
+      },
     ],
     sqlQueries: [
       {
@@ -131,8 +177,23 @@ GROUP BY Cuisine;`,
       "Performed EDA on rating distributions and price bands",
       "Identified cuisine clusters with high vote volume and delivery adoption",
     ],
-    powerBIDashboard:
-      "Interactive dashboard with slicers for city, cuisine, price range, and delivery availability. KPI cards for average rating, vote volume, and online delivery share with segment comparison visuals.",
+    powerBIDashboard: {
+      summary:
+        "Interactive dashboard with slicers for city, cuisine, price range, and delivery availability. KPI cards for average rating, vote volume, and online delivery share with segment comparison visuals.",
+      charts: ["KPI Card", "Bar Chart", "Pie Chart", "Slicer", "Map"],
+      steps: [
+        {
+          title: "Prepare analysis-ready views",
+          description:
+            "Loaded cleaned restaurant data into Power BI and built measures for rating and delivery KPIs.",
+        },
+        {
+          title: "Design segment comparison visuals",
+          description:
+            "Built cuisine and city comparison charts with slicers for price range and delivery availability.",
+        },
+      ],
+    },
     businessInsights: [
       "Certain cuisines showed consistently higher ratings and order potential in target cities",
       "Mid-price restaurants had the strongest balance of volume and satisfaction",
@@ -172,9 +233,18 @@ GROUP BY Cuisine;`,
     problemStatement:
       "Repetitive weekly and monthly reports consumed significant analyst time due to manual extraction, formatting, and validation steps.",
     dataCleaning: [
-      "Built reusable Power Query steps for column standardization",
-      "Added VBA validation checks for missing keys and totals mismatch",
-      "Created parameterized SQL extracts for recurring report periods",
+      {
+        description: "Built reusable Power Query steps for column standardization",
+        tool: "Power Query",
+      },
+      {
+        description: "Added VBA validation checks for missing keys and totals mismatch",
+        tool: "Excel",
+      },
+      {
+        description: "Created parameterized SQL extracts for recurring report periods",
+        tool: "SQL",
+      },
     ],
     sqlQueries: [
       {
@@ -191,8 +261,23 @@ ORDER BY Department, KPI_Name;`,
       },
     ],
     pythonAnalysis: [],
-    powerBIDashboard:
-      "Complementary Excel and Power BI outputs for leadership summaries, with automated refresh pipelines feeding consistent KPI tables.",
+    powerBIDashboard: {
+      summary:
+        "Complementary Excel and Power BI outputs for leadership summaries, with automated refresh pipelines feeding consistent KPI tables.",
+      charts: ["KPI Card", "Table / Matrix", "Line Chart", "Waterfall Chart"],
+      steps: [
+        {
+          title: "Automate refresh pipeline",
+          description:
+            "Connected Power Query outputs to Power BI datasets with scheduled refresh windows.",
+        },
+        {
+          title: "Publish leadership summary views",
+          description:
+            "Built KPI tables and variance visuals for recurring MIS reporting cycles.",
+        },
+      ],
+    },
     businessInsights: [
       "Automation freed analyst time for insight generation instead of manual compilation",
       "Standardized templates improved stakeholder trust in recurring MIS packs",

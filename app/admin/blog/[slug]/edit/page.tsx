@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { BlogEditor } from "@/components/admin/blog-editor";
+import { LazyBlogEditor } from "@/components/admin/lazy-editors";
 import { getBlogPostBySlug } from "@/lib/blog/repository";
 
 export default async function EditBlogPostPage({
@@ -14,5 +14,5 @@ export default async function EditBlogPostPage({
     notFound();
   }
 
-  return <BlogEditor mode="edit" initialPost={post} />;
+  return <LazyBlogEditor mode="edit" initialPost={post} />;
 }

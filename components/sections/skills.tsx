@@ -20,7 +20,7 @@ import {
   TrendingUp,
   type LucideIcon,
 } from "lucide-react";
-import { skills, skillCategories } from "@/data/skills";
+import type { Skill } from "@/types";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { GlassCard } from "@/components/ui/glass-card";
 import { Progress } from "@/components/ui/progress";
@@ -47,7 +47,7 @@ const iconMap: Record<string, LucideIcon> = {
   "trending-up": TrendingUp,
 };
 
-function SkillCard({ skill }: { skill: (typeof skills)[0] }) {
+function SkillCard({ skill }: { skill: Skill }) {
   const [hovered, setHovered] = useState(false);
   const Icon = iconMap[skill.icon] || Database;
 
@@ -88,7 +88,13 @@ function SkillCard({ skill }: { skill: (typeof skills)[0] }) {
   );
 }
 
-export function SkillsSection() {
+export function SkillsSection({
+  skills,
+  skillCategories,
+}: {
+  skills: Skill[];
+  skillCategories: string[];
+}) {
   const [activeCategory, setActiveCategory] = useState("All");
 
   const filteredSkills =

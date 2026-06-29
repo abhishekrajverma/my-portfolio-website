@@ -3,13 +3,13 @@
 import { useState } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
-import { faqs } from "@/data/misc";
+import type { FAQ } from "@/types";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { GlassCard } from "@/components/ui/glass-card";
 import { MotionWrapper } from "@/components/animations/motion-wrapper";
 import { cn } from "@/lib/utils";
 
-export function FAQSection() {
+export function FAQSection({ faqs }: { faqs: FAQ[] }) {
   const [openId, setOpenId] = useState<string | null>(null);
   const reduceMotion = useReducedMotion();
 

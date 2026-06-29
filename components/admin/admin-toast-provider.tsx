@@ -2,12 +2,13 @@
 
 import {
   createContext,
+  Suspense,
   useCallback,
   useContext,
   useEffect,
   useState,
 } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { AlertCircle, CheckCircle, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -19,9 +20,9 @@ type ToastState = {
 } | null;
 
 const urlToastMessages: Record<string, string> = {
-  deleted: "Blog post deleted successfully.",
-  published: "Blog post published successfully.",
-  updated: "Blog post updated successfully.",
+  deleted: "Item deleted successfully.",
+  published: "Published successfully.",
+  updated: "Updated successfully.",
 };
 
 const AdminToastContext = createContext<{
@@ -31,9 +32,36 @@ const AdminToastContext = createContext<{
 export function useAdminToast() {
   const context = useContext(AdminToastContext);
   if (!context) {
+    if (typeof window === "undefined") {
+      return { showToast: () => {} };
+    }
     throw new Error("useAdminToast must be used within AdminToastProvider");
   }
   return context;
+}
+
+function AdminToastFromSearchParams() {
+  const { showToast } = useAdminToast();
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    const toastKey = searchParams.get("toast");
+    const message = toastKey ? urlToastMessages[toastKey] : null;
+
+    if (!message) return;
+
+    showToast(message, "success");
+
+    const cleanTimer = window.setTimeout(() => {
+      router.replace(pathname, { scroll: false });
+    }, 4300);
+
+    return () => window.clearTimeout(cleanTimer);
+  }, [searchParams, router, pathname, showToast]);
+
+  return null;
 }
 
 export function AdminToastProvider({
@@ -41,8 +69,6 @@ export function AdminToastProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const router = useRouter();
-  const searchParams = useSearchParams();
   const [toast, setToast] = useState<ToastState>(null);
   const [visible, setVisible] = useState(false);
 
@@ -54,21 +80,6 @@ export function AdminToastProvider({
   const dismissToast = useCallback(() => {
     setVisible(false);
   }, []);
-
-  useEffect(() => {
-    const toastKey = searchParams.get("toast");
-    const message = toastKey ? urlToastMessages[toastKey] : null;
-
-    if (!message) return;
-
-    showToast(message, "success");
-
-    const cleanTimer = window.setTimeout(() => {
-      router.replace("/admin/blog", { scroll: false });
-    }, 4300);
-
-    return () => window.clearTimeout(cleanTimer);
-  }, [searchParams, router, showToast]);
 
   useEffect(() => {
     if (!toast) return;
@@ -84,6 +95,9 @@ export function AdminToastProvider({
 
   return (
     <AdminToastContext.Provider value={{ showToast }}>
+      <Suspense fallback={null}>
+        <AdminToastFromSearchParams />
+      </Suspense>
       {children}
       {toast ? (
         <div

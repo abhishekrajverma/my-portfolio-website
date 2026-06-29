@@ -1,7 +1,7 @@
 "use client";
 
 import { ExternalLink, Award } from "lucide-react";
-import { certifications } from "@/data/certifications";
+import type { Certification } from "@/types";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { GlassCard } from "@/components/ui/glass-card";
 import { Badge } from "@/components/ui/badge";
@@ -21,7 +21,11 @@ const platformColors: Record<string, string> = {
   Udemy: "from-purple-500/20 to-pink-500/10 border-purple-500/30",
 };
 
-export function CertificationsSection() {
+export function CertificationsSection({
+  certifications,
+}: {
+  certifications: Certification[];
+}) {
   return (
     <section id="certifications" className="section-padding">
       <div className="container-custom">

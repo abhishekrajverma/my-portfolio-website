@@ -4,7 +4,8 @@ import { SectionLink } from "@/components/layout/section-link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ExternalLink } from "lucide-react";
 import { GitHubIcon } from "@/components/icons/social-icons";
-import { projects, getProjectBySlug } from "@/data/projects";
+import { getProjectBySlug, getAllProjectSlugs } from "@/lib/projects/repository";
+import { normalizePowerBIDashboard, sanitizePowerBIDashboardForSave } from "@/lib/projects/helpers";
 import { GlassCard } from "@/components/ui/glass-card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -17,7 +18,8 @@ import {
 import { pageMetadata } from "@/lib/seo/metadata";
 
 export async function generateStaticParams() {
-  return projects.map((p) => ({ slug: p.slug }));
+  const slugs = await getAllProjectSlugs();
+  return slugs.map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({
@@ -26,7 +28,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const project = getProjectBySlug(slug);
+  const project = await getProjectBySlug(slug);
   if (!project) return { title: "Project Not Found" };
 
   return pageMetadata({
@@ -43,8 +45,11 @@ export default async function ProjectPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const project = getProjectBySlug(slug);
+  const project = await getProjectBySlug(slug);
   if (!project) notFound();
+  const powerBIDashboard = sanitizePowerBIDashboardForSave(
+    normalizePowerBIDashboard(project.powerBIDashboard)
+  );
 
   return (
     <>
@@ -122,14 +127,34 @@ export default async function ProjectPage({
 
           <GlassCard hover={false}>
             <h2 className="mb-4 text-xl font-semibold">Data Cleaning</h2>
-            <ul className="space-y-2">
-              {project.dataCleaning.map((item) => (
-                <li key={item} className="flex items-start gap-2 text-muted-foreground">
-                  <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
-                  {item}
-                </li>
+            <div className="space-y-4">
+              {project.dataCleaning.map((step, index) => (
+                <div
+                  key={`${step.description}-${index}`}
+                  className="rounded-xl border border-border/70 bg-muted/10 p-4"
+                >
+                  <div className="mb-2 flex flex-wrap items-center gap-2">
+                    <Badge variant="accent">{step.tool}</Badge>
+                    {step.tool === "Python" && step.toolDetail ? (
+                      <span className="text-xs text-muted-foreground">
+                        Libraries: {step.toolDetail}
+                      </span>
+                    ) : null}
+                  </div>
+                  <p className="text-muted-foreground">{step.description}</p>
+                  {step.image ? (
+                    <div className="relative mt-4 aspect-video overflow-hidden rounded-lg border border-border">
+                      <Image
+                        src={step.image}
+                        alt={`${step.tool} data cleaning step`}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                  ) : null}
+                </div>
               ))}
-            </ul>
+            </div>
           </GlassCard>
 
           <GlassCard hover={false}>
@@ -158,7 +183,46 @@ export default async function ProjectPage({
             </ul>
           </GlassCard>
 
-          <Section title="Power BI Dashboard" content={project.powerBIDashboard} />
+          <GlassCard hover={false}>
+            <h2 className="mb-4 text-xl font-semibold">Power BI Dashboard</h2>
+            {powerBIDashboard.summary ? (
+              <p className="mb-4 text-muted-foreground">
+                {powerBIDashboard.summary}
+              </p>
+            ) : null}
+            {powerBIDashboard.charts.length > 0 ? (
+              <div className="mb-6 flex flex-wrap gap-2">
+                {powerBIDashboard.charts.map((chart) => (
+                  <Badge key={chart} variant="glass">
+                    {chart}
+                  </Badge>
+                ))}
+              </div>
+            ) : null}
+            {powerBIDashboard.steps.length > 0 ? (
+              <div className="space-y-4">
+                {powerBIDashboard.steps.map((step, index) => (
+                  <div
+                    key={`${step.title}-${index}`}
+                    className="rounded-xl border border-border/70 bg-muted/10 p-4"
+                  >
+                    <h3 className="mb-2 font-medium">{step.title}</h3>
+                    <p className="text-muted-foreground">{step.description}</p>
+                    {step.image ? (
+                      <div className="relative mt-4 aspect-video overflow-hidden rounded-lg border border-border">
+                        <Image
+                          src={step.image}
+                          alt={step.title}
+                          fill
+                          className="object-cover"
+                        />
+                      </div>
+                    ) : null}
+                  </div>
+                ))}
+              </div>
+            ) : null}
+          </GlassCard>
 
           <GlassCard hover={false}>
             <h2 className="mb-4 text-xl font-semibold">Business Insights</h2>

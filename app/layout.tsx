@@ -9,6 +9,7 @@ import { DeferredUi } from "@/components/layout/deferred-ui";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { siteConfig } from "@/constants/site";
 import { getProfileAvatarUrl } from "@/lib/profile/avatar";
+import { getResumeDownloadInfo } from "@/lib/resume/repository";
 import { env } from "@/lib/env";
 import { absoluteUrl } from "@/lib/seo/metadata";
 import "./globals.css";
@@ -96,7 +97,10 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const avatarUrl = await getProfileAvatarUrl();
+  const [avatarUrl, resume] = await Promise.all([
+    getProfileAvatarUrl(),
+    getResumeDownloadInfo(),
+  ]);
 
   return (
     <html
@@ -120,7 +124,11 @@ export default async function RootLayout({
             </a>
             <AppSplash avatarUrl={avatarUrl} />
             <LazyAnimatedBackground />
-            <Navbar avatarUrl={avatarUrl} />
+            <Navbar
+              avatarUrl={avatarUrl}
+              resumeUrl={resume.url}
+              resumeDownloadName={resume.downloadName}
+            />
             <main id="main-content" className="flex-1">
               {children}
             </main>

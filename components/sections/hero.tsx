@@ -1,7 +1,7 @@
 import { Download, Mail } from "lucide-react";
-import { profile } from "@/data/profile";
-import { siteConfig } from "@/constants/site";
+import { getAboutContent } from "@/lib/content/repository";
 import { getProfileAvatarUrl } from "@/lib/profile/avatar";
+import { getResumeDownloadInfo } from "@/lib/resume/repository";
 import { ProfileAvatarImage } from "@/components/profile/profile-avatar-image";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -10,10 +10,14 @@ import { HeroRole } from "@/components/sections/hero-role";
 import { SectionAnchor } from "@/components/layout/section-anchor";
 import { HeroScrollHint } from "@/components/sections/hero-scroll-hint";
 
-const descriptionText = `${profile.tagline}. Specializing in ${profile.techStack.join(" · ")} to drive data-informed decisions.`;
-
 export async function HeroSection() {
-  const avatarUrl = await getProfileAvatarUrl();
+  const [avatarUrl, about, resume] = await Promise.all([
+    getProfileAvatarUrl(),
+    getAboutContent(),
+    getResumeDownloadInfo(),
+  ]);
+
+  const descriptionText = `${about.tagline}. Specializing in ${about.techStack.join(" · ")} to drive data-informed decisions.`;
 
   return (
     <section
@@ -29,12 +33,12 @@ export async function HeroSection() {
 
             <h1 className="text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl xl:text-7xl">
               <span className="block text-foreground">Hi, I&apos;m</span>
-              <span className="mt-1 block gradient-text">{profile.name}</span>
+              <span className="mt-1 block gradient-text">{about.name}</span>
             </h1>
 
-            <p className="sr-only">{profile.role}</p>
+            <p className="sr-only">{about.role}</p>
 
-            <HeroRole roles={profile.typingRoles} />
+            <HeroRole roles={about.typingRoles} />
 
             <p className="max-w-lg leading-relaxed text-muted-foreground">
               {descriptionText}
@@ -44,10 +48,7 @@ export async function HeroSection() {
 
             <div className="flex flex-wrap gap-4 pt-2">
               <Button variant="gradient" size="lg" asChild>
-                <a
-                  href={siteConfig.resumeUrl}
-                  download={siteConfig.resumeDownloadName}
-                >
+                <a href={resume.url} download={resume.downloadName}>
                   <Download className="h-5 w-5" />
                   Download Resume
                 </a>
@@ -65,7 +66,7 @@ export async function HeroSection() {
             <div className="relative aspect-square overflow-hidden rounded-2xl border border-border bg-card">
               <ProfileAvatarImage
                 src={avatarUrl}
-                alt={profile.name}
+                alt={about.name}
                 width={480}
                 height={480}
                 sizes="(max-width: 1024px) 80vw, 480px"

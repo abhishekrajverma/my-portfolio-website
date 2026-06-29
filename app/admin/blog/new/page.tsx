@@ -1,5 +1,5 @@
-import { BlogEditor } from "@/components/admin/blog-editor";
+import { LazyBlogEditor } from "@/components/admin/lazy-editors";
 
 export default function NewBlogPostPage() {
-  return <BlogEditor mode="create" />;
+  return <LazyBlogEditor mode="create" />;
 }

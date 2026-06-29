@@ -57,6 +57,7 @@ async function AdminBlogPostList() {
 export default function AdminBlogPage() {
   return (
     <AdminShell
+      studio="blog"
       title="Your Posts"
       description="Manage published articles stored in Supabase. Changes go live within a few minutes."
       breadcrumb={

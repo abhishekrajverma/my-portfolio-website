@@ -17,7 +17,7 @@ export default function AdminLoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(
     searchParams.get("error") === "unauthorized"
-      ? "This account is not allowed to access the blog studio."
+      ? "This account is not allowed to access the admin studio."
       : ""
   );
   const [isLoading, setIsLoading] = useState(false);
@@ -38,7 +38,7 @@ export default function AdminLoginPage() {
         throw signInError;
       }
 
-      const nextPath = searchParams.get("next") || "/admin/blog";
+      const nextPath = searchParams.get("next") || "/admin";
       router.push(nextPath);
       router.refresh();
     } catch (loginError) {
@@ -53,9 +53,9 @@ export default function AdminLoginPage() {
   return (
     <div className="flex min-h-screen items-center justify-center px-4 py-16">
       <GlassCard className="w-full max-w-md space-y-6">
-        <h1 className="text-center text-xl font-semibold tracking-tight">
-          Admin login
-        </h1>
+        <div className="space-y-2 text-center">
+          <h1 className="text-xl font-semibold tracking-tight">Admin login</h1>
+        </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
@@ -96,7 +96,7 @@ export default function AdminLoginPage() {
                 Signing in...
               </>
             ) : (
-              "Sign in"
+              "Sign in to Admin"
             )}
           </Button>
         </form>

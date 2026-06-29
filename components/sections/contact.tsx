@@ -10,8 +10,11 @@ import {
   Send,
   CheckCircle,
 } from "lucide-react";
-import { LinkedInIcon, GitHubIcon } from "@/components/icons/social-icons";
-import { siteConfig, socialLinks } from "@/constants/site";
+import type { ContactContent } from "@/lib/content/types";
+import {
+  getSocialLinkIcon,
+  getSocialPlatformLabel,
+} from "@/lib/content/social-link-icons";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { GlassCard } from "@/components/ui/glass-card";
 import { Button } from "@/components/ui/button";
@@ -27,42 +30,34 @@ interface ContactForm {
   message: string;
 }
 
-const contactInfo = [
+const contactInfo = (contact: ContactContent) => [
   {
     icon: Mail,
     label: "Email",
-    value: siteConfig.email,
-    href: `mailto:${siteConfig.email}`,
+    value: contact.email,
+    href: `mailto:${contact.email}`,
   },
   {
     icon: Phone,
     label: "Phone",
-    value: siteConfig.phone,
-    href: `tel:${siteConfig.phone.replace(/\s/g, "")}`,
+    value: contact.phone,
+    href: `tel:${contact.phone.replace(/\s/g, "")}`,
   },
   {
     icon: MapPin,
     label: "Location",
-    value: siteConfig.location,
+    value: contact.location,
     href: null,
   },
-  {
-    icon: LinkedInIcon,
-    label: "LinkedIn",
-    value: "linkedin.com/in/abhishekrajverma",
-    href: socialLinks.find((s) => s.icon === "linkedin")?.url,
-    external: true,
-  },
-  {
-    icon: GitHubIcon,
-    label: "GitHub",
-    value: "github.com/abhishekrajverma",
-    href: socialLinks.find((s) => s.icon === "github")?.url,
-    external: true,
-  },
+  ...contact.socialLinks.map((link) => ({
+    icon: getSocialLinkIcon(link.platform),
+    label: getSocialPlatformLabel(link.platform),
+    value: link.label,
+    href: link.url,
+  })),
 ];
 
-export function ContactSection() {
+export function ContactSection({ contact }: { contact: ContactContent }) {
   const [submitted, setSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState("");
   const {
@@ -117,8 +112,8 @@ export function ContactSection() {
             <GlassCard className="h-full">
               <h3 className="mb-6 text-xl font-semibold">Get in Touch</h3>
               <div className="space-y-5">
-                {contactInfo.map((info) => (
-                  <div key={info.label} className="flex items-start gap-4">
+                {contactInfo(contact).map((info) => (
+                  <div key={info.href ?? info.label} className="flex items-start gap-4">
                     <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10">
                       <info.icon className="h-5 w-5 text-primary" />
                     </div>
@@ -129,8 +124,14 @@ export function ContactSection() {
                       {info.href ? (
                         <a
                           href={info.href}
-                          target={info.external ? "_blank" : undefined}
-                          rel={info.external ? "noopener noreferrer" : undefined}
+                          target={
+                            info.href.startsWith("http") ? "_blank" : undefined
+                          }
+                          rel={
+                            info.href.startsWith("http")
+                              ? "noopener noreferrer"
+                              : undefined
+                          }
                           className="font-medium hover:text-primary transition-colors"
                         >
                           {info.value}
@@ -144,10 +145,9 @@ export function ContactSection() {
               </div>
 
               <div className="mt-8 rounded-xl bg-gradient-to-br from-primary/10 via-secondary/10 to-accent/10 p-6">
-                <h4 className="font-semibold mb-2">Open to Opportunities</h4>
+                <h4 className="font-semibold mb-2">{contact.availabilityTitle}</h4>
                 <p className="text-sm text-muted-foreground">
-                  Currently exploring Data Analyst and MIS Analyst roles in
-                  Gurgaon, Noida, and remote-friendly teams. Response time: within 24 hours.
+                  {contact.availabilityText}
                 </p>
               </div>
             </GlassCard>

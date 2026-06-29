@@ -1,8 +1,10 @@
 import { resumeData } from "@/data/resume";
 import { siteConfig } from "@/constants/site";
 import { ResumeActions } from "@/components/resume/resume-actions";
+import { ResumePdfPreview } from "@/components/resume/resume-preview";
 import { Separator } from "@/components/ui/separator";
 import { pageMetadata } from "@/lib/seo/metadata";
+import { getResumeAssets } from "@/lib/resume/repository";
 
 export const metadata = pageMetadata({
   title: `Resume | ${siteConfig.name} — Data Analyst & MIS Executive`,
@@ -10,11 +12,38 @@ export const metadata = pageMetadata({
   path: "/resume",
 });
 
-export default function ResumePage() {
+export default async function ResumePage() {
+  const { download: resume, word } = await getResumeAssets();
+
+  if (resume.source === "pdf") {
+    return (
+      <div className="section-padding pt-28">
+        <div className="container-custom max-w-5xl">
+          <ResumeActions
+            resumeUrl={resume.url}
+            resumeDownloadName={resume.downloadName}
+            source={resume.source}
+            word={word}
+          />
+          <ResumePdfPreview
+            pdfUrl={resume.url}
+            title={`${siteConfig.name} resume`}
+            className="h-[80vh] w-full rounded-2xl border border-border bg-background"
+          />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="section-padding pt-28">
       <div className="container-custom max-w-3xl">
-        <ResumeActions />
+        <ResumeActions
+          resumeUrl={resume.url}
+          resumeDownloadName={resume.downloadName}
+          source={resume.source}
+          word={word}
+        />
 
         <article className="glass rounded-2xl p-8 md:p-12 print:border-0 print:bg-white print:text-black print:shadow-none">
           <header className="mb-8">

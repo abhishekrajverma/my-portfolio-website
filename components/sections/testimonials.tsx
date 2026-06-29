@@ -1,7 +1,7 @@
 "use client";
 
 import { Quote } from "lucide-react";
-import { testimonials } from "@/data/misc";
+import type { Testimonial } from "@/types";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { GlassCard } from "@/components/ui/glass-card";
 import {
@@ -10,7 +10,11 @@ import {
   StaggerItem,
 } from "@/components/animations/motion-wrapper";
 
-export function TestimonialsSection() {
+export function TestimonialsSection({
+  testimonials,
+}: {
+  testimonials: Testimonial[];
+}) {
   return (
     <section id="testimonials" className="section-padding bg-muted/10">
       <div className="container-custom">

@@ -17,8 +17,8 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   return (
-    <Suspense fallback={<PageSkeleton />}>
-      <AdminToastProvider>{children}</AdminToastProvider>
-    </Suspense>
+    <AdminToastProvider>
+      <Suspense fallback={<PageSkeleton />}>{children}</Suspense>
+    </AdminToastProvider>
   );
 }

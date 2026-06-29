@@ -11,7 +11,6 @@ export const profile = {
   techStack: ["SQL Server", "Power BI", "Python", "GenAI"],
   typingRoles: ["Data Analyst", "Data Engineer", "MIS Executive"],
   avatar: "/my-photo.jpeg", // fallback when Supabase profile storage is unavailable
-  heroImage: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop",
   languages: ["English", "Hindi"],
 };
 

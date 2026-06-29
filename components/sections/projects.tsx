@@ -6,7 +6,7 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowUpRight, ExternalLink, Search } from "lucide-react";
 import { GitHubIcon } from "@/components/icons/social-icons";
-import { projects } from "@/data/projects";
+import type { Project } from "@/types";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -15,7 +15,7 @@ import { MotionWrapper } from "@/components/animations/motion-wrapper";
 import { staggerContainer, staggerItem } from "@/components/animations/motion-wrapper";
 import { cn } from "@/lib/utils";
 
-function ProjectCard({ project }: { project: (typeof projects)[0] }) {
+function ProjectCard({ project }: { project: Project }) {
   const previewInsight = project.keyInsights[0];
 
   return (
@@ -152,13 +152,13 @@ function ProjectCard({ project }: { project: (typeof projects)[0] }) {
   );
 }
 
-export function ProjectsSection() {
+export function ProjectsSection({ projects }: { projects: Project[] }) {
   const [search, setSearch] = useState("");
   const [activeTag, setActiveTag] = useState("All");
 
   const allTags = useMemo(
     () => ["All", ...Array.from(new Set(projects.flatMap((p) => p.tags)))],
-    []
+    [projects]
   );
 
   const filtered = useMemo(
@@ -172,7 +172,7 @@ export function ProjectsSection() {
         const matchesTag = activeTag === "All" || p.tags.includes(activeTag);
         return matchesSearch && matchesTag;
       }),
-    [search, activeTag]
+    [search, activeTag, projects]
   );
 
   const filterKey = `${activeTag}-${search}`;

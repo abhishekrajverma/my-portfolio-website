@@ -1,7 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Clock } from "lucide-react";
-import { projects } from "@/data/projects";
+import { getAllProjects } from "@/lib/projects/repository";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { GlassCard } from "@/components/ui/glass-card";
 import { Badge } from "@/components/ui/badge";
@@ -15,7 +14,9 @@ export const metadata = pageMetadata({
   path: "/projects",
 });
 
-export default function ProjectsPage() {
+export default async function ProjectsPage() {
+  const projects = await getAllProjects();
+
   return (
     <div className="section-padding pt-28">
       <div className="container-custom">

@@ -194,6 +194,7 @@ export function BlogEditor({ mode, initialPost }: BlogEditorProps) {
 
   return (
     <AdminShell
+      studio="blog"
       title={mode === "create" ? "Create Post" : "Edit Post"}
       description="Write in Markdown, upload a cover image, and publish without touching code."
       breadcrumb={

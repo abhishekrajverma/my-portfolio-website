@@ -34,6 +34,51 @@ export interface TimelineItem {
   type: "experience" | "education" | "milestone";
 }
 
+export type DataCleaningTool =
+  | "Power Query"
+  | "Excel"
+  | "Python"
+  | "SQL"
+  | "Other";
+
+export interface DataCleaningStep {
+  description: string;
+  tool: DataCleaningTool;
+  toolDetail?: string;
+  image?: string;
+}
+
+export type PowerBIChartType =
+  | "Bar Chart"
+  | "Column Chart"
+  | "Line Chart"
+  | "Area Chart"
+  | "Pie Chart"
+  | "Donut Chart"
+  | "KPI Card"
+  | "Gauge"
+  | "Map"
+  | "Treemap"
+  | "Funnel Chart"
+  | "Scatter Chart"
+  | "Table / Matrix"
+  | "Waterfall Chart"
+  | "Combo Chart"
+  | "Slicer"
+  | "Card";
+
+export interface PowerBIDashboardStep {
+  title: string;
+  description: string;
+  image?: string;
+}
+
+export interface PowerBIDashboard {
+  summary?: string;
+  charts: PowerBIChartType[];
+  steps: PowerBIDashboardStep[];
+}
+
 export interface Project {
   slug: string;
   title: string;
@@ -49,10 +94,10 @@ export interface Project {
   featured: boolean;
   overview: string;
   problemStatement: string;
-  dataCleaning: string[];
+  dataCleaning: DataCleaningStep[];
   sqlQueries: { title: string; query: string }[];
   pythonAnalysis: string[];
-  powerBIDashboard: string;
+  powerBIDashboard: PowerBIDashboard;
   businessInsights: string[];
   recommendations: string[];
   screenshots: string[];

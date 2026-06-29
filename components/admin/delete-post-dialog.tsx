@@ -14,6 +14,7 @@ interface DeletePostDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   title: string;
+  entityLabel?: string;
   onConfirm: () => Promise<void>;
   isDeleting?: boolean;
 }
@@ -22,6 +23,7 @@ export function DeletePostDialog({
   open,
   onOpenChange,
   title,
+  entityLabel = "blog post",
   onConfirm,
   isDeleting = false,
 }: DeletePostDialogProps) {
@@ -39,7 +41,7 @@ export function DeletePostDialog({
       <DialogContent className="flex max-h-[min(85dvh,calc(100dvh-1.5rem))] w-[calc(100vw-1.5rem)] max-w-md flex-col gap-3 overflow-y-auto rounded-xl border-border bg-background! p-4 pr-9 shadow-xl max-sm:top-auto max-sm:bottom-3 max-sm:translate-y-0 sm:gap-5 sm:p-6 sm:pr-12">
         <DialogHeader className="space-y-1.5 text-left sm:space-y-2.5">
           <DialogTitle className="pr-3 text-left text-sm font-semibold leading-snug sm:pr-2 sm:text-lg">
-            Delete blog post?
+            Delete {entityLabel}?
           </DialogTitle>
           <DialogDescription className="text-left text-xs leading-relaxed text-foreground/90! sm:text-sm">
             <span className="font-semibold break-words text-foreground">

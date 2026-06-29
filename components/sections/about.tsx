@@ -2,15 +2,8 @@
 
 import { motion } from "framer-motion";
 import { Briefcase, GraduationCap, Target } from "lucide-react";
-import {
-  profile,
-  experiences,
-  education,
-  experienceTimeline,
-  educationTimeline,
-  stats,
-} from "@/data/profile";
-import type { TimelineItem } from "@/types";
+import type { AboutContent } from "@/lib/content/types";
+import type { Education, Experience, TimelineItem } from "@/types";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { GlassCard } from "@/components/ui/glass-card";
 import {
@@ -107,7 +100,17 @@ function TimelineList({
   );
 }
 
-export function AboutSection() {
+export function AboutSection({
+  content,
+  experienceTimeline,
+  educationTimeline,
+}: {
+  content: AboutContent;
+  experienceTimeline: TimelineItem[];
+  educationTimeline: TimelineItem[];
+}) {
+  const { experiences, education, stats } = content;
+
   return (
     <section id="about" className="section-padding">
       <div className="container-custom">
@@ -124,14 +127,14 @@ export function AboutSection() {
             <GlassCard className="h-full">
               <h3 className="mb-4 text-xl font-semibold">Professional Summary</h3>
               <p className="text-muted-foreground leading-relaxed">
-                {profile.summary}
+                {content.summary}
               </p>
               <div className="mt-6 flex items-start gap-3 rounded-lg bg-muted/30 p-4">
                 <Target className="mt-0.5 h-5 w-5 shrink-0 text-accent" />
                 <div>
                   <h4 className="font-medium">Career Objective</h4>
                   <p className="mt-1 text-sm text-muted-foreground leading-relaxed">
-                    {profile.careerObjective}
+                    {content.careerObjective}
                   </p>
                 </div>
               </div>

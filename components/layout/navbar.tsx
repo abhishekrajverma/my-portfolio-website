@@ -32,7 +32,15 @@ const CommandMenu = dynamic(
   { ssr: false }
 );
 
-export function Navbar({ avatarUrl }: { avatarUrl: string }) {
+export function Navbar({
+  avatarUrl,
+  resumeUrl,
+  resumeDownloadName,
+}: {
+  avatarUrl: string;
+  resumeUrl: string;
+  resumeDownloadName: string;
+}) {
   const pathname = usePathname();
   const navSections = getNavSections(pathname);
   const primaryNavSections = getPrimaryNavSections(pathname);
@@ -161,8 +169,8 @@ export function Navbar({ avatarUrl }: { avatarUrl: string }) {
               asChild
             >
               <a
-                href={siteConfig.resumeUrl}
-                download={siteConfig.resumeDownloadName}
+                href={resumeUrl}
+                download={resumeDownloadName}
                 aria-label="Download resume"
               >
                 <Download className="h-4 w-4" />
@@ -210,8 +218,8 @@ export function Navbar({ avatarUrl }: { avatarUrl: string }) {
               </Link>
               <Button variant="gradient" className="w-full" asChild>
                   <a
-                    href={siteConfig.resumeUrl}
-                    download={siteConfig.resumeDownloadName}
+                    href={resumeUrl}
+                    download={resumeDownloadName}
                   >
                     <Download className="h-4 w-4" />
                     Download Resume
