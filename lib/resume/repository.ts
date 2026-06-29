@@ -7,8 +7,8 @@ import {
   RESUME_WORD_DOWNLOAD_NAME,
 } from "@/lib/resume/constants";
 import {
-  getResumePdfPublicUrl,
-  getResumeWordPublicUrl,
+  getVersionedResumePdfPublicUrl,
+  getVersionedResumeWordPublicUrl,
   resumePdfExistsInStorage,
   resumeWordExistsInStorage,
 } from "@/lib/resume/storage";
@@ -37,7 +37,7 @@ async function resolveResumeWordInfo(): Promise<ResumeWordInfo | null> {
   }
 
   return {
-    url: getResumeWordPublicUrl(),
+    url: await getVersionedResumeWordPublicUrl(),
     downloadName: RESUME_WORD_DOWNLOAD_NAME,
   };
 }
@@ -45,7 +45,7 @@ async function resolveResumeWordInfo(): Promise<ResumeWordInfo | null> {
 async function resolveResumeDownloadInfo(): Promise<ResumeDownloadInfo> {
   if (await resumePdfExistsInStorage()) {
     return {
-      url: getResumePdfPublicUrl(),
+      url: await getVersionedResumePdfPublicUrl(),
       downloadName: RESUME_PDF_DOWNLOAD_NAME,
       source: "pdf",
     };

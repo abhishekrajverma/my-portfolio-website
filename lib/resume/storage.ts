@@ -19,6 +19,44 @@ export function getResumeWordPublicUrl(): string {
   return getPortfolioStoragePublicUrl(RESUME_WORD_STORAGE_PATH);
 }
 
+function appendStorageCacheBuster(url: string, version: string | number): string {
+  const separator = url.includes("?") ? "&" : "?";
+  return `${url}${separator}v=${version}`;
+}
+
+async function getStorageFileVersion(path: string): Promise<number | null> {
+  if (!isResumeStorageConfigured()) return null;
+
+  const lastSlash = path.lastIndexOf("/");
+  const folder = lastSlash >= 0 ? path.slice(0, lastSlash) : "";
+  const fileName = lastSlash >= 0 ? path.slice(lastSlash + 1) : path;
+
+  const supabase = getSupabaseAdmin();
+  const { data, error } = await supabase.storage
+    .from(RESUME_STORAGE_BUCKET)
+    .list(folder, { search: fileName, limit: 1 });
+
+  if (error || !data?.length) return null;
+
+  const file = data.find((entry) => entry.name === fileName) ?? data[0];
+  const timestamp = file.updated_at ?? file.created_at;
+  if (!timestamp) return null;
+
+  return new Date(timestamp).getTime();
+}
+
+export async function getVersionedResumePdfPublicUrl(): Promise<string> {
+  const baseUrl = getResumePdfPublicUrl();
+  const version = await getStorageFileVersion(RESUME_PDF_STORAGE_PATH);
+  return version ? appendStorageCacheBuster(baseUrl, version) : baseUrl;
+}
+
+export async function getVersionedResumeWordPublicUrl(): Promise<string> {
+  const baseUrl = getResumeWordPublicUrl();
+  const version = await getStorageFileVersion(RESUME_WORD_STORAGE_PATH);
+  return version ? appendStorageCacheBuster(baseUrl, version) : baseUrl;
+}
+
 async function resumeFileExistsInStorage(path: string): Promise<boolean> {
   if (!isResumeStorageConfigured()) return false;
 
@@ -58,7 +96,7 @@ export async function uploadResumePdf(
     throw new Error(error.message);
   }
 
-  return getResumePdfPublicUrl();
+  return getVersionedResumePdfPublicUrl();
 }
 
 export async function uploadResumeWord(
@@ -79,5 +117,5 @@ export async function uploadResumeWord(
     throw new Error(error.message);
   }
 
-  return getResumeWordPublicUrl();
+  return getVersionedResumeWordPublicUrl();
 }
