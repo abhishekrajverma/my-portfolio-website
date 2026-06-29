@@ -1,10 +1,19 @@
 import nodemailer from "nodemailer";
 import type SMTPTransport from "nodemailer/lib/smtp-transport";
+import { Resend } from "resend";
 
 let transporter: nodemailer.Transporter<SMTPTransport.SentMessageInfo> | null =
   null;
+let resendClient: Resend | null = null;
 
-export function isMailConfigured(): boolean {
+export function isResendConfigured(): boolean {
+  return Boolean(
+    process.env.RESEND_API_KEY?.trim() &&
+      (process.env.RESEND_FROM?.trim() || process.env.SMTP_FROM?.trim())
+  );
+}
+
+export function isSmtpConfigured(): boolean {
   return Boolean(
     process.env.SMTP_HOST?.trim() &&
       process.env.SMTP_USER?.trim() &&
@@ -13,8 +22,17 @@ export function isMailConfigured(): boolean {
   );
 }
 
+export function isMailConfigured(): boolean {
+  return isResendConfigured() || isSmtpConfigured();
+}
+
 export function getDefaultFromEmail(): string {
-  return process.env.SMTP_FROM?.trim() || process.env.SMTP_USER?.trim() || "";
+  return (
+    process.env.RESEND_FROM?.trim() ||
+    process.env.SMTP_FROM?.trim() ||
+    process.env.SMTP_USER?.trim() ||
+    ""
+  );
 }
 
 function requireMailEnv(name: string): string {
@@ -25,10 +43,24 @@ function requireMailEnv(name: string): string {
   return value;
 }
 
-export function getMailTransporter() {
-  if (!isMailConfigured()) {
+function getResendClient(): Resend {
+  if (!isResendConfigured()) {
     throw new Error(
-      "Email is not configured. Add SMTP_HOST, SMTP_USER, SMTP_PASS, and SMTP_FROM to .env.local"
+      "Resend is not configured. Add RESEND_API_KEY and RESEND_FROM to .env.local"
+    );
+  }
+
+  if (!resendClient) {
+    resendClient = new Resend(requireMailEnv("RESEND_API_KEY"));
+  }
+
+  return resendClient;
+}
+
+export function getMailTransporter() {
+  if (!isSmtpConfigured()) {
+    throw new Error(
+      "SMTP is not configured. Add SMTP_HOST, SMTP_USER, SMTP_PASS, and SMTP_FROM to .env.local"
     );
   }
 
@@ -57,7 +89,7 @@ type SendMailParams = {
   headers?: Record<string, string>;
 };
 
-export async function sendMail({
+async function sendViaResend({
   to,
   subject,
   html,
@@ -66,9 +98,38 @@ export async function sendMail({
   replyTo,
   headers,
 }: SendMailParams) {
-  const transporter = getMailTransporter();
+  const resend = getResendClient();
+  const recipients = Array.isArray(to) ? to : [to];
 
-  const info = await transporter.sendMail({
+  const { data, error } = await resend.emails.send({
+    from: from ?? getDefaultFromEmail(),
+    to: recipients,
+    subject,
+    html,
+    text,
+    replyTo,
+    headers,
+  });
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return { messageId: data?.id ?? "" };
+}
+
+async function sendViaSmtp({
+  to,
+  subject,
+  html,
+  text,
+  from,
+  replyTo,
+  headers,
+}: SendMailParams) {
+  const smtpTransporter = getMailTransporter();
+
+  return smtpTransporter.sendMail({
     from: from ?? getDefaultFromEmail(),
     to,
     replyTo,
@@ -77,6 +138,12 @@ export async function sendMail({
     text,
     headers,
   });
+}
 
-  return info;
+export async function sendMail(params: SendMailParams) {
+  if (isResendConfigured()) {
+    return sendViaResend(params);
+  }
+
+  return sendViaSmtp(params);
 }

@@ -1,30 +1,22 @@
 import { env } from "@/lib/env";
+import { getDefaultFromEmail, isMailConfigured } from "@/lib/mailer";
 import { isBlobStorageConfigured } from "@/lib/newsletter/blob-store";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
 
-function hasSmtpConfig(): boolean {
-  return Boolean(
-    process.env.SMTP_HOST?.trim() &&
-      process.env.SMTP_USER?.trim() &&
-      process.env.SMTP_PASS?.trim() &&
-      process.env.SMTP_FROM?.trim()
-  );
-}
-
 export function isNewsletterConfigured(): boolean {
-  return hasSmtpConfig();
+  return isMailConfigured();
 }
 
 export function getNewsletterSetupError(): string {
-  if (hasSmtpConfig()) {
+  if (isMailConfigured()) {
     return "";
   }
 
   if (process.env.VERCEL) {
-    return "Newsletter email is not set up on Vercel. Add SMTP_HOST, SMTP_USER, SMTP_PASS, and SMTP_FROM in Project Settings → Environment Variables, then redeploy.";
+    return "Newsletter email is not set up on Vercel. Add RESEND_API_KEY and RESEND_FROM (or SMTP settings) in Project Settings → Environment Variables, then redeploy.";
   }
 
-  return "Newsletter is not configured yet. Add SMTP settings to .env.local.";
+  return "Newsletter is not configured yet. Add RESEND_API_KEY and RESEND_FROM to .env.local.";
 }
 
 export function isSubscriberStorageConfigured(): boolean {
@@ -45,9 +37,9 @@ export function getSubscriberStorageError(): string {
 }
 
 export function getNewsletterConfig() {
-  const fromEmail = process.env.SMTP_FROM?.trim();
+  const fromEmail = getDefaultFromEmail();
   if (!fromEmail) {
-    throw new Error("Missing environment variable: SMTP_FROM");
+    throw new Error("Missing RESEND_FROM or SMTP_FROM");
   }
 
   return {

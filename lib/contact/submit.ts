@@ -26,10 +26,10 @@ export function getContactSetupError(): string {
   }
 
   if (process.env.VERCEL) {
-    return "Contact form is not set up on Vercel. Add Supabase credentials or SMTP settings, then redeploy.";
+    return "Contact form is not set up on Vercel. Add Resend (RESEND_API_KEY, RESEND_FROM), Supabase credentials, or SMTP settings, then redeploy.";
   }
 
-  return "Contact form is not configured yet. Add Supabase or SMTP settings to .env.local.";
+  return "Contact form is not configured yet. Add Resend, Supabase, or SMTP settings to .env.local.";
 }
 
 async function saveContactMessage(data: ContactSubmission): Promise<void> {
